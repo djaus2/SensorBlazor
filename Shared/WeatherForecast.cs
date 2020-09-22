@@ -20,6 +20,8 @@ namespace BlazorSensorApp.Shared
         public string Id { get; set; }
         public double? Value { get; set; }
 
+        //public int TemperatureF => 32 + (int)(Value / 0.5556);
+
         public bool State {get; set;}
         public List<double>? Values { get; set; }
         public SensorType SensorType { get; set; }

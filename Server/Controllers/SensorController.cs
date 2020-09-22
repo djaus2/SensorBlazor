@@ -40,6 +40,7 @@ namespace BlazorSensorApp.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Sensor sensor)
         {
+            SimulatedDevice.Main(sensor);
             await Task.Delay(1000);
             return Ok(sensor.Id);
         }
