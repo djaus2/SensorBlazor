@@ -1,6 +1,6 @@
 {
-  "name": "SensorBlazor",
-  "short_name": "SensorBlazor",
+  "name": "BlazorSensorApp",
+  "short_name": "BlazorSensorApp",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

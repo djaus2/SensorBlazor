@@ -1,6 +1,9 @@
 @page "/fetchdata"
-@using SensorBlazor.Shared
+@page "/fetchdata/{sensortype}/{sensorvalue}"
+@using BlazorSensorApp.Shared
+@using System.Net.Http
 @inject HttpClient Http
+@*@inject IHttpClientFactory ClientFactory*@
 
 <h1>Weather forecast</h1>
 
@@ -33,14 +36,149 @@ else
             }
         </tbody>
     </table>
+    @*@if (SensorAvailable)
+    {*@ 
+   
+<EditForm OnValidSubmit=@Send Model="@_Sensor">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <table>
+        <tr>
+            <td align="right" valign="middle"><label><i>Id:&nbsp;</i></label></td>
+            <td valign="middle"><b>@_Sensor.Id</b></td>
+        </tr>
+        <tr>
+            <td align="right" valign="middle"><label><i>TimeStamp:&nbsp;</i></label></td>
+            <td valign="middle"><b>@_Sensor.TimeStamp</b></td>
+        </tr>
+        <tr>
+            <td align="right" valign="middle"><label><i>Sensor Type:&nbsp;</i></label></td>
+            <td valign="middle">
+                <InputSelect @bind-Value="_Sensor.SensorType">
+                    @foreach (var typ in Enum.GetValues(typeof(SensorType)))
+                        {
+                        <option value="@typ">@typ</option>
+                        }
+                </InputSelect>
+            </td>
+        </tr>
+        @if (_Sensor.SensorType == SensorType.accelerometer)
+        {
+            <tr>
+                <td align="right" valign="middle"><label for="Value"><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
+                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value1" PlaceHolder="X value." /></td>
+                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value2" PlaceHolder="Y value." /></td>
+                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value3" PlaceHolder="Z value." /></td>
+            </tr>
+        }
+        else if (_Sensor.SensorType == SensorType.environment)
+        {
+            <tr>
+                <td align="right" valign="middle"><label for="Value"><i>Environment):&nbsp;</i></label></td>
+                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value4" PlaceHolder="Temperature value." /></td>
+                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value5" PlaceHolder="Humidity value." /></td>
+                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value6" PlaceHolder="Pressure value." /></td>
+            </tr>
+        }
+        else if (_Sensor.SensorType == SensorType.sswitch)
+        {
+
+            <tr>
+                <td align="right" valign="middle"><label for="Switch"><i>Value:&nbsp;</i></label></td>
+                <td valign="middle"><InputCheckbox @bind-Value=@_Sensor.State class="form-control" id="Switch" PlaceHolder="Switch off and on" /></td>
+            </tr>
+        }
+        else
+        {
+
+        <tr>
+            <td align="right" valign="middle"><label for="Value"><i>Value:&nbsp;</i></label></td>
+            <td valign="middle"><InputNumber @bind-Value=@_Sensor.Value class="form-control" id="Value" PlaceHolder="Please enter a decimal value." /></td>
+        </tr>
+        }
+
+
+        <tr><td><input type="submit" class="btn btn-primary" value="Send" /></td><td></td></tr>
+    </table>
+</EditForm>
+            
+    @*}*@
+    <button class="btn btn-primary" @onclick="@Fred">Click me</button>
 }
 
 @code {
+    [Parameter]
+    public string sensortype { get; set; }
+    [Parameter]
+    public string sensorvalue { get; set;}
     private WeatherForecast[] forecasts;
+
+    //@onselectionchange="@(() => { StateHasChanged(); })"
+
+    double? value1=null;
+    double? value2=null;
+    double? value3=null;
+
+    bool accelerometer { get; set; } = false;
+
+    private bool SensorAvailable { get; set; } = false;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        await base.OnInitializedAsync();
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("Sensor");
+
+
+
+        Guid guid = Guid.NewGuid();
+        long TimeStamp = DateTime.Now.Ticks;
+        _Sensor = new Sensor { Id = guid.ToString(), TimeStamp = TimeStamp };
+        _Sensor.SensorType = SensorType.accelerometer;
+        if (!string.IsNullOrEmpty(sensortype))
+        {
+            object obj;
+            if (Enum.TryParse(typeof(SensorType), sensortype, true, out obj))
+            {
+                _Sensor.SensorType = (SensorType)obj;
+            }
+            //SensorType? val = (SensorType)Enum.Parse(typeof(SensorType), sensortype);
+            //if (val != null)
+            //    _Sensor.SensorType = (SensorType)val;
+        }
+        _Sensor.Value = 0.0;
+        if (!string.IsNullOrEmpty(sensorvalue))
+        {
+            double val;
+            if (double.TryParse(sensorvalue, out val))
+                _Sensor.Value = val;
+        }
+        SensorAvailable = true;
+        StateHasChanged();
+    }
+
+    private Sensor _Sensor { get; set; }
+
+    private async Task  Send()
+    {
+        //accelerometer = !accelerometer;
+        //StateHasChanged();
+        if ((_Sensor.SensorType== SensorType.accelerometer) || (_Sensor.SensorType == SensorType.environment))
+        {
+            _Sensor.Values = new List<double> {(double) value1, (double)value2, (double)value3 };
+        }
+        var result = await Http.PostAsJsonAsync<Sensor>("Sensor", _Sensor);
+        System.Diagnostics.Debug.WriteLine(result.StatusCode);
+    }
+
+    private void Fred(MouseEventArgs mouseEventArgs)
+    {
+        //accelerometer = !accelerometer;
+        StateHasChanged();
     }
 
 }
