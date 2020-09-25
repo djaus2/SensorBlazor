@@ -1,0 +1,190 @@
+@page "/directdata/{sensortype}/{sensorvalue}"
+@using BlazorSensorApp.Shared
+@using System.Net.Http
+@inject HttpClient Http
+@*@inject IHttpClientFactory ClientFactory*@
+
+@inject NavigationManager NavigationManager
+
+<h1>Send Sensor Values to IoTHub</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (!SensorAvailable)
+{
+<p><em>Loading...</em></p>
+}
+else
+{
+
+<EditForm OnValidSubmit=@Send Model="@_Sensor">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <table>
+        <tr>
+            <td align="right" valign="middle"><label><i>No:&nbsp;</i></label></td>
+            <td valign="middle"><b>@_Sensor.No</b></td>
+        </tr>
+        <tr>
+            <td align="right" valign="middle"><label><i>Id:&nbsp;</i></label></td>
+            <td valign="middle"><b>@_Sensor.Id</b></td>
+        </tr>
+        <tr>
+            <td align="right" valign="middle"><label><i>TimeStamp:&nbsp;</i></label></td>
+            <td valign="middle"><b>@_Sensor.TimeStamp</b></td>
+        </tr>
+        <tr>
+            <td align="right" valign="middle"><label><i>Sensor Type:&nbsp;</i></label></td>
+            <td valign="middle">
+                <InputSelect @bind-Value="_Sensor.SensorType">
+                    @foreach (var typ in Enum.GetValues(typeof(SensorType)))
+                            {
+                    <option value="@typ">@typ</option>
+                            }
+                </InputSelect>
+            </td>
+        </tr>
+        @if (_Sensor.SensorType == SensorType.accelerometer)
+            {
+        <tr>
+            <td align="right" valign="middle"><label for="Value"><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
+            <td valign="middle">&nbsp;<label>@value1</label></td>
+            <td valign="middle">&nbsp;<label>@value2</label></td>
+            <td valign="middle">&nbsp;<label>@value3</label></td>
+        </tr>
+            }
+            else if (_Sensor.SensorType == SensorType.environment)
+            {
+        <tr>
+            <td align="right" valign="middle"><label for="Value"><i>Environment):&nbsp;</i></label></td>
+            <td valign="middle">&nbsp;<label>@value1</label></td>
+            <td valign="middle">&nbsp;<label>@value2</label></td>
+            <td valign="middle">&nbsp;<label>@value3</label></td>
+        </tr>
+            }
+            else if (_Sensor.SensorType == SensorType.sswitch)
+            {
+
+        <tr>
+            <td align="right" valign="middle"><label for="Switch"><i>Value:&nbsp;</i></label></td>
+            <td valign="middle"><InputCheckbox @bind-Value=@_Sensor.State class="form-control" id="Switch" PlaceHolder="Switch off and on" /></td>
+        </tr>
+            }
+            else
+            {
+
+        <tr>
+            <td align="right" valign="middle"><label for="Value"><i>Value:&nbsp;</i></label></td>
+            <td valign="middle"><label>@_Sensor.Value </label></td>
+        </tr>
+            }
+
+
+        @*<tr><td><input type="submit" class="btn btn-primary" value="Send" /></td><td></td></tr>*@
+        <tr><td align="right"><i>Result:&nbsp:</i></td><td><font color="Blue"><b>@Result</b></font></td></tr>
+    </table>
+</EditForm>
+}
+
+
+
+
+@code {
+    [Parameter]
+    public string sensortype { get; set; }
+    [Parameter]
+    public string sensorvalue { get; set; }
+
+    //@onselectionchange="@(() => { StateHasChanged(); })"
+
+    double? value1 = null;
+    double? value2 = null;
+    double? value3 = null;
+
+
+    bool accelerometer { get; set; } = false;
+    string Result="Loading";
+
+    private bool SensorAvailable { get; set; } = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+            await Send();
+    }
+
+    void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        string navigationMethod = e.IsNavigationIntercepted ? "HTML" : "code";
+        //Http.PostAsJsonAsync<bool>("Sensor", false).GetAwaiter();
+        System.Diagnostics.Debug.WriteLine($"Notified of navigation via {navigationMethod} to {e.Location}");
+        NavigationManager.LocationChanged -= LocationChanged;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        NavigationManager.LocationChanged += LocationChanged;
+
+        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("Sensor");
+
+        //var result = await Http.PostAsJsonAsync<bool>("Sensor", true);
+
+        Guid guid = Guid.NewGuid();
+        long TimeStamp = DateTime.Now.Ticks;
+        _Sensor = new Sensor { Id = guid.ToString(), TimeStamp = TimeStamp };
+        _Sensor.SensorType = SensorType.accelerometer;
+        _Sensor.No = Sensor.Count;
+        if (!string.IsNullOrEmpty(sensortype))
+        {
+            object obj;
+            if (Enum.TryParse(typeof(SensorType), sensortype, true, out obj))
+            {
+                _Sensor.SensorType = (SensorType)obj;
+            }
+            //SensorType? val = (SensorType)Enum.Parse(typeof(SensorType), sensortype);
+            //if (val != null)
+            //    _Sensor.SensorType = (SensorType)val;
+        }
+        _Sensor.Value = 0.0;
+        if (!string.IsNullOrEmpty(sensorvalue))
+        {
+            double val;
+            if (double.TryParse(sensorvalue, out val))
+                _Sensor.Value = val;
+        }
+        SensorAvailable = true;
+        StateHasChanged();
+    }
+
+    private Sensor _Sensor { get; set; }
+
+    private async Task Send()
+    {
+        Result="Busy";
+        StateHasChanged();
+        //accelerometer = !accelerometer;
+        //StateHasChanged();
+        if ((_Sensor.SensorType == SensorType.accelerometer) || (_Sensor.SensorType == SensorType.environment))
+        {
+            _Sensor.Values = new List<double> { (double)value1, (double)value2, (double)value3 };
+        }
+        Guid guid = Guid.NewGuid();
+        long TimeStamp = DateTime.Now.Ticks;
+        _Sensor.No = ++Sensor.Count;
+        _Sensor.Id = guid.ToString();
+        _Sensor.TimeStamp = TimeStamp;
+        var result = await Http.PostAsJsonAsync<Sensor>("Sensor", _Sensor);
+        System.Diagnostics.Debug.WriteLine(result.StatusCode);
+        Result = result.StatusCode.ToString();
+        StateHasChanged();
+    }
+
+    private void Fred(MouseEventArgs mouseEventArgs)
+    {
+        //accelerometer = !accelerometer;
+        StateHasChanged();
+    }
+
+}
