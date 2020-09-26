@@ -44,19 +44,19 @@ else
             @if (_Sensor.SensorType == SensorType.accelerometer)
             {
                 <tr>
-                    <td align="right" valign="middle"><label for="Value"><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
-                    <td valign="middle">&nbsp;<label>@value1</label></td>
-                    <td valign="middle">&nbsp;<label>@value2</label></td>
-                    <td valign="middle">&nbsp;<label>@value3</label></td>
+                    <td align="right" valign="middle" width="50px"><label><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
+                    <td valign="middle" width="50px">&nbsp;<label>@value1</label></td>
+                    <td valign="middle" width="50px">&nbsp;<label>@value2</label></td>
+                    <td valign="middle" width="50px">&nbsp;<label>@value3</label></td>
                 </tr>
             }
             else if (_Sensor.SensorType == SensorType.environment)
             {
                 <tr>
-                    <td align="right" valign="middle"><label for="Value"><i>Environment):&nbsp;</i></label></td>
-                    <td valign="middle">&nbsp;<label>@value1</label></td>
-                    <td valign="middle">&nbsp;<label>@value2</label></td>
-                    <td valign="middle">&nbsp;<label>@value3</label></td>
+                    <td align="right" valign="middle" width="50px"><label><i>Environment:&nbsp;</i></label></td>
+                    <td valign="middle" width="50px">&nbsp;<label>@value1</label></td>
+                    <td valign="middle" width="50px">&nbsp;<label>@value2</label></td>
+                    <td valign="middle" width="50px">&nbsp;<label>@value3</label></td>
                 </tr>
             }
             else if (_Sensor.SensorType == SensorType.sswitch)
@@ -171,7 +171,7 @@ else
             if (!string.IsNullOrEmpty(sensorvalue3))
             {
                 double val;
-                if (double.TryParse(sensorvalue2, out val))
+                if (double.TryParse(sensorvalue3, out val))
                     value3 = val;
                 else
                     value3 = 0.0;
