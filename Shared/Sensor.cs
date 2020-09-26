@@ -8,7 +8,7 @@ namespace BlazorSensorApp.Shared
 
     public class Sensor
     {
-        public const char DecimalPointSubChar= 'X'; //Use in Decimal Parameter Strings
+        public const char DecimalPointSubChar = 'X'; //Use in Decimal Parameter Strings
         public static int Count {get; set;} = 0;
         public int No { get; set; }
         public string Id { get; set; }

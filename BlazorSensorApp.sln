@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorSensorApp.Server", "Server\BlazorSensorApp.Server.csproj", "{F8FE6619-8D5F-417F-BCFA-667CD2B6BE13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSensorApp.Server", "Server\BlazorSensorApp.Server.csproj", "{F8FE6619-8D5F-417F-BCFA-667CD2B6BE13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorSensorApp.Client", "Client\BlazorSensorApp.Client.csproj", "{7C70D79A-EEF3-454F-96F0-99B246899BF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSensorApp.Client", "Client\BlazorSensorApp.Client.csproj", "{7C70D79A-EEF3-454F-96F0-99B246899BF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorSensorApp.Shared", "Shared\BlazorSensorApp.Shared.csproj", "{E323BE7D-2675-4C95-90D2-3C3B663AB858}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSensorApp.Shared", "Shared\BlazorSensorApp.Shared.csproj", "{E323BE7D-2675-4C95-90D2-3C3B663AB858}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

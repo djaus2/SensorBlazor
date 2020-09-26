@@ -1,0 +1,37 @@
+@page "/stop/"
+@using BlazorSensorApp.Shared
+@using System.Net.Http
+@inject HttpClient Http
+@*@inject IHttpClientFactory ClientFactory*@
+
+@inject NavigationManager NavigationManager
+
+<h1>Start Send Sensor Values to IoTHub Service</h1>
+
+<h1><i>Result:&nbsp:</i></h1>
+<h1><font color="Blue"><b>@Result</b></font></h1>
+
+@code {
+
+
+    string Result = "Stopping";
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            var result = await Http.PostAsJsonAsync<bool>("Sensor", true);
+            Result = "Stopped: " + result.StatusCode.ToString();
+            StateHasChanged();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        StateHasChanged();
+    }
+
+}

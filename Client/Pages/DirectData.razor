@@ -1,15 +1,16 @@
+
 @page "/directdata/{sensortype}/{sensorvalue}"
 @page "/directdata/{sensortype}/{sensorvalue}/{sensorvalue2}/{sensorvalue3}"
+
 @using BlazorSensorApp.Shared
 @using System.Net.Http
 @inject HttpClient Http
-@*@inject IHttpClientFactory ClientFactory*@
 
 @inject NavigationManager NavigationManager
 
 <h1>Send Sensor Values to IoTHub</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>Requires the Service to be running.</p>
 
 @if (!SensorAvailable)
 {
@@ -18,7 +19,7 @@
 else
 {
 
-    <EditForm OnValidSubmit=@Send Model="@_Sensor">
+    <EditForm OnValidSubmit=@SendDummy Model="@_Sensor">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
@@ -43,39 +44,38 @@ else
             </tr>
             @if (_Sensor.SensorType == SensorType.accelerometer)
             {
-                <tr>
-                    <td align="right" valign="middle" width="50px"><label><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
-                    <td valign="middle" width="50px">&nbsp;<label>@value1</label></td>
-                    <td valign="middle" width="50px">&nbsp;<label>@value2</label></td>
-                    <td valign="middle" width="50px">&nbsp;<label>@value3</label></td>
-                </tr>
+            <tr>
+                <td align="right" valign="middle" width="50px"><label><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
+                <td valign="middle" width="50px">&nbsp;<label>@value1</label></td>
+                <td valign="middle" width="50px">&nbsp;<label>@value2</label></td>
+                <td valign="middle" width="50px">&nbsp;<label>@value3</label></td>
+            </tr>
             }
             else if (_Sensor.SensorType == SensorType.environment)
             {
-                <tr>
-                    <td align="right" valign="middle" width="50px"><label><i>Environment:&nbsp;</i></label></td>
-                    <td valign="middle" width="50px">&nbsp;<label>@value1</label></td>
-                    <td valign="middle" width="50px">&nbsp;<label>@value2</label></td>
-                    <td valign="middle" width="50px">&nbsp;<label>@value3</label></td>
-                </tr>
+            <tr>
+                <td align="right" valign="middle" width="50px"><label><i>Environment:&nbsp;</i></label></td>
+                <td valign="middle" width="50px">&nbsp;<label>@value1</label></td>
+                <td valign="middle" width="50px">&nbsp;<label>@value2</label></td>
+                <td valign="middle" width="50px">&nbsp;<label>@value3</label></td>
+            </tr>
             }
             else if (_Sensor.SensorType == SensorType.sswitch)
             {
 
-                <tr>
-                    <td align="right" valign="middle"><label for="Switch"><i>Switch Value:&nbsp;</i></label></td>
-                    <td valign="middle"><label>@_Sensor.State</label>></td>
-                </tr>
+            <tr>
+                <td align="right" valign="middle"><label for="Switch"><i>Switch Value:&nbsp;</i></label></td>
+                <td valign="middle"><label>@_Sensor.State</label>></td>
+            </tr>
             }
             else
             {
 
-                <tr>
-                    <td align="right" valign="middle"><label for="Value"><i>Value:&nbsp;</i></label></td>
-                    <td valign="middle"><label>@_Sensor.Value </label></td>
-                </tr>
+            <tr>
+                <td align="right" valign="middle"><label for="Value"><i>Value:&nbsp;</i></label></td>
+                <td valign="middle"><label>@_Sensor.Value </label></td>
+            </tr>
             }
-
 
             <tr><td align="right"><i>Result:&nbsp:</i></td><td><font color="Blue"><b>@Result</b></font></td></tr>
         </table>
@@ -97,10 +97,11 @@ else
 
     //@onselectionchange="@(() => { StateHasChanged(); })"
 
+    char decimalPointSubChar = Sensor.DecimalPointSubChar;
+
     double? value1 = null;
     double? value2 = null;
     double? value3 = null;
-
 
     bool accelerometer { get; set; } = false;
     string Result = "Loading";
@@ -127,7 +128,6 @@ else
         await base.OnInitializedAsync();
         NavigationManager.LocationChanged += LocationChanged;
 
-        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("Sensor");
 
         //var result = await Http.PostAsJsonAsync<bool>("Sensor", true);
 
@@ -202,6 +202,10 @@ else
         System.Diagnostics.Debug.WriteLine(result.StatusCode);
         Result = result.StatusCode.ToString();
         StateHasChanged();
+    }
+
+    private async Task SendDummy()
+    {
     }
 
     private void Fred(MouseEventArgs mouseEventArgs)

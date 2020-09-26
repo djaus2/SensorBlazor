@@ -5,13 +5,13 @@
 @using BlazorSensorApp.Shared
 @using System.Net.Http
 @inject HttpClient Http
-@*@inject IHttpClientFactory ClientFactory*@
 
 @inject NavigationManager NavigationManager
 
 <h1>Send Sensor Values to IoTHub</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>Auto starts the Service if not running.</p>
+
 
 @if (!SensorAvailable)
 {
@@ -50,19 +50,19 @@ else
             @if (_Sensor.SensorType == SensorType.accelerometer)
             {
                 <tr>
-                    <td align="right" valign="middle"><label for="Value"><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
-                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value1" PlaceHolder="X value." /></td>
-                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value2" PlaceHolder="Y value." /></td>
-                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value3" PlaceHolder="Z value." /></td>
+                    <td align="right" width="50px" valign="middle"><label for="Value"><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
+                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value1" PlaceHolder="X value." /></td>
+                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value2" PlaceHolder="Y value." /></td>
+                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value3" PlaceHolder="Z value." /></td>
                 </tr>
             }
             else if (_Sensor.SensorType == SensorType.environment)
             {
                 <tr>
-                    <td align="right" valign="middle"><label for="Value"><i>Environment):&nbsp;</i></label></td>
-                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value4" PlaceHolder="Temperature value." /></td>
-                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value5" PlaceHolder="Humidity value." /></td>
-                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value6" PlaceHolder="Pressure value." /></td>
+                    <td align="right" width="50px" valign="middle"><label for="Value"><i>Environment:&nbsp;</i></label></td>
+                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value4" PlaceHolder="Temperature value." /></td>
+                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value5" PlaceHolder="Humidity value." /></td>
+                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value6" PlaceHolder="Pressure value." /></td>
                 </tr>
             }
             else if (_Sensor.SensorType == SensorType.sswitch)
@@ -132,9 +132,9 @@ else
         await base.OnInitializedAsync();
         NavigationManager.LocationChanged += LocationChanged;
 
-        decimalPointSubChar = Sensor.DecimalPointSubChar;
-
         var result = await Http.PostAsJsonAsync<bool>("Sensor", true);
+        Result = "Started";
+        StateHasChanged();
 
         Guid guid = Guid.NewGuid();
         long TimeStamp = DateTime.Now.Ticks;
@@ -175,7 +175,7 @@ else
             {
                 double val;
                 sensorvalue3 = sensorvalue3.ToUpper().Replace('X', '.');
-                if (double.TryParse(sensorvalue2, out val))
+                if (double.TryParse(sensorvalue3, out val))
                     value3 = val;
                 else
                     value3 = 0.0;
