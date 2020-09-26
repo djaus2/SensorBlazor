@@ -1,4 +1,5 @@
 @page "/directdata/{sensortype}/{sensorvalue}"
+@page "/directdata/{sensortype}/{sensorvalue}/{sensorvalue2}/{sensorvalue3}"
 @using BlazorSensorApp.Shared
 @using System.Net.Http
 @inject HttpClient Http
@@ -12,78 +13,73 @@
 
 @if (!SensorAvailable)
 {
-<p><em>Loading...</em></p>
+    <p><em>Loading...</em></p>
 }
 else
 {
 
-<EditForm OnValidSubmit=@Send Model="@_Sensor">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <table>
-        <tr>
-            <td align="right" valign="middle"><label><i>No:&nbsp;</i></label></td>
-            <td valign="middle"><b>@_Sensor.No</b></td>
-        </tr>
-        <tr>
-            <td align="right" valign="middle"><label><i>Id:&nbsp;</i></label></td>
-            <td valign="middle"><b>@_Sensor.Id</b></td>
-        </tr>
-        <tr>
-            <td align="right" valign="middle"><label><i>TimeStamp:&nbsp;</i></label></td>
-            <td valign="middle"><b>@_Sensor.TimeStamp</b></td>
-        </tr>
-        <tr>
-            <td align="right" valign="middle"><label><i>Sensor Type:&nbsp;</i></label></td>
-            <td valign="middle">
-                <InputSelect @bind-Value="_Sensor.SensorType">
-                    @foreach (var typ in Enum.GetValues(typeof(SensorType)))
-                            {
-                    <option value="@typ">@typ</option>
-                            }
-                </InputSelect>
-            </td>
-        </tr>
-        @if (_Sensor.SensorType == SensorType.accelerometer)
+    <EditForm OnValidSubmit=@Send Model="@_Sensor">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <table>
+            <tr>
+                <td align="right" valign="middle"><label><i>No:&nbsp;</i></label></td>
+                <td valign="middle"><b>@_Sensor.No</b></td>
+            </tr>
+            <tr>
+                <td align="right" valign="middle"><label><i>Id:&nbsp;</i></label></td>
+                <td valign="middle"><b>@_Sensor.Id</b></td>
+            </tr>
+            <tr>
+                <td align="right" valign="middle"><label><i>TimeStamp:&nbsp;</i></label></td>
+                <td valign="middle"><b>@_Sensor.TimeStamp</b></td>
+            </tr>
+            <tr>
+                <td align="right" valign="middle"><label><i>Sensor Type:&nbsp;</i></label></td>
+                <td valign="middle">
+                    <label>@_Sensor.SensorType</label>
+                </td>
+            </tr>
+            @if (_Sensor.SensorType == SensorType.accelerometer)
             {
-        <tr>
-            <td align="right" valign="middle"><label for="Value"><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
-            <td valign="middle">&nbsp;<label>@value1</label></td>
-            <td valign="middle">&nbsp;<label>@value2</label></td>
-            <td valign="middle">&nbsp;<label>@value3</label></td>
-        </tr>
+                <tr>
+                    <td align="right" valign="middle"><label for="Value"><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
+                    <td valign="middle">&nbsp;<label>@value1</label></td>
+                    <td valign="middle">&nbsp;<label>@value2</label></td>
+                    <td valign="middle">&nbsp;<label>@value3</label></td>
+                </tr>
             }
             else if (_Sensor.SensorType == SensorType.environment)
             {
-        <tr>
-            <td align="right" valign="middle"><label for="Value"><i>Environment):&nbsp;</i></label></td>
-            <td valign="middle">&nbsp;<label>@value1</label></td>
-            <td valign="middle">&nbsp;<label>@value2</label></td>
-            <td valign="middle">&nbsp;<label>@value3</label></td>
-        </tr>
+                <tr>
+                    <td align="right" valign="middle"><label for="Value"><i>Environment):&nbsp;</i></label></td>
+                    <td valign="middle">&nbsp;<label>@value1</label></td>
+                    <td valign="middle">&nbsp;<label>@value2</label></td>
+                    <td valign="middle">&nbsp;<label>@value3</label></td>
+                </tr>
             }
             else if (_Sensor.SensorType == SensorType.sswitch)
             {
 
-        <tr>
-            <td align="right" valign="middle"><label for="Switch"><i>Value:&nbsp;</i></label></td>
-            <td valign="middle"><InputCheckbox @bind-Value=@_Sensor.State class="form-control" id="Switch" PlaceHolder="Switch off and on" /></td>
-        </tr>
+                <tr>
+                    <td align="right" valign="middle"><label for="Switch"><i>Switch Value:&nbsp;</i></label></td>
+                    <td valign="middle"><label>@_Sensor.State</label>></td>
+                </tr>
             }
             else
             {
 
-        <tr>
-            <td align="right" valign="middle"><label for="Value"><i>Value:&nbsp;</i></label></td>
-            <td valign="middle"><label>@_Sensor.Value </label></td>
-        </tr>
+                <tr>
+                    <td align="right" valign="middle"><label for="Value"><i>Value:&nbsp;</i></label></td>
+                    <td valign="middle"><label>@_Sensor.Value </label></td>
+                </tr>
             }
 
 
-        @*<tr><td><input type="submit" class="btn btn-primary" value="Send" /></td><td></td></tr>*@
-        <tr><td align="right"><i>Result:&nbsp:</i></td><td><font color="Blue"><b>@Result</b></font></td></tr>
-    </table>
-</EditForm>
+            <tr><td align="right"><i>Result:&nbsp:</i></td><td><font color="Blue"><b>@Result</b></font></td></tr>
+        </table>
+    </EditForm>
 }
 
 
@@ -94,6 +90,10 @@ else
     public string sensortype { get; set; }
     [Parameter]
     public string sensorvalue { get; set; }
+    [Parameter]
+    public string sensorvalue2 { get; set; }
+    [Parameter]
+    public string sensorvalue3 { get; set; }
 
     //@onselectionchange="@(() => { StateHasChanged(); })"
 
@@ -103,7 +103,7 @@ else
 
 
     bool accelerometer { get; set; } = false;
-    string Result="Loading";
+    string Result = "Loading";
 
     private bool SensorAvailable { get; set; } = false;
 
@@ -153,6 +153,29 @@ else
             double val;
             if (double.TryParse(sensorvalue, out val))
                 _Sensor.Value = val;
+            else
+                _Sensor.Value = 0.9;
+        }
+        if ((_Sensor.SensorType == SensorType.accelerometer) || (_Sensor.SensorType == SensorType.environment))
+        {
+            value1 = _Sensor.Value;
+            _Sensor.Value = null;
+            if (!string.IsNullOrEmpty(sensorvalue2))
+            {
+                double val;
+                if (double.TryParse(sensorvalue2, out val))
+                    value2 = val;
+                else
+                    value2 = 0.0;
+            }
+            if (!string.IsNullOrEmpty(sensorvalue3))
+            {
+                double val;
+                if (double.TryParse(sensorvalue2, out val))
+                    value3 = val;
+                else
+                    value3 = 0.0;
+            }
         }
         SensorAvailable = true;
         StateHasChanged();
@@ -162,7 +185,7 @@ else
 
     private async Task Send()
     {
-        Result="Busy";
+        Result = "Busy";
         StateHasChanged();
         //accelerometer = !accelerometer;
         //StateHasChanged();

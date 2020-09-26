@@ -1,6 +1,7 @@
 @page "/"
 @page "/sendsensordata"
 @page "/sendsensordata/{sensortype}/{sensorvalue}"
+@page "/sendsensordata/{sensortype}/{sensorvalue}/{sensorvalue2}/{sensorvalue3}"
 @using BlazorSensorApp.Shared
 @using System.Net.Http
 @inject HttpClient Http
@@ -41,44 +42,44 @@ else
                     <InputSelect @bind-Value="_Sensor.SensorType">
                         @foreach (var typ in Enum.GetValues(typeof(SensorType)))
                             {
-                        <option value="@typ">@typ</option>
+                            <option value="@typ">@typ</option>
                             }
                     </InputSelect>
                 </td>
             </tr>
             @if (_Sensor.SensorType == SensorType.accelerometer)
             {
-            <tr>
-                <td align="right" valign="middle"><label for="Value"><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
-                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value1" PlaceHolder="X value." /></td>
-                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value2" PlaceHolder="Y value." /></td>
-                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value3" PlaceHolder="Z value." /></td>
-            </tr>
+                <tr>
+                    <td align="right" valign="middle"><label for="Value"><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
+                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value1" PlaceHolder="X value." /></td>
+                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value2" PlaceHolder="Y value." /></td>
+                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value3" PlaceHolder="Z value." /></td>
+                </tr>
             }
             else if (_Sensor.SensorType == SensorType.environment)
             {
-            <tr>
-                <td align="right" valign="middle"><label for="Value"><i>Environment):&nbsp;</i></label></td>
-                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value4" PlaceHolder="Temperature value." /></td>
-                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value5" PlaceHolder="Humidity value." /></td>
-                <td valign="middle">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value6" PlaceHolder="Pressure value." /></td>
-            </tr>
+                <tr>
+                    <td align="right" valign="middle"><label for="Value"><i>Environment):&nbsp;</i></label></td>
+                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value4" PlaceHolder="Temperature value." /></td>
+                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value5" PlaceHolder="Humidity value." /></td>
+                    <td valign="middle">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value6" PlaceHolder="Pressure value." /></td>
+                </tr>
             }
             else if (_Sensor.SensorType == SensorType.sswitch)
             {
 
-            <tr>
-                <td align="right" valign="middle"><label for="Switch"><i>Value:&nbsp;</i></label></td>
-                <td valign="middle"><InputCheckbox @bind-Value=@_Sensor.State class="form-control" id="Switch" PlaceHolder="Switch off and on" /></td>
-            </tr>
+                <tr>
+                    <td align="right" valign="middle"><label for="Switch"><i>Value:&nbsp;</i></label></td>
+                    <td valign="middle"><InputCheckbox @bind-Value=@_Sensor.State class="form-control" id="Switch" PlaceHolder="Switch off and on" /></td>
+                </tr>
             }
             else
             {
 
-            <tr>
-                <td align="right" valign="middle"><label for="Value"><i>Value:&nbsp;</i></label></td>
-                <td valign="middle"><InputNumber @bind-Value=@_Sensor.Value class="form-control" id="Value" PlaceHolder="Please enter a decimal value." /></td>
-            </tr>
+                <tr>
+                    <td align="right" valign="middle"><label for="Value"><i>Value:&nbsp;</i></label></td>
+                    <td valign="middle"><InputNumber @bind-Value=@_Sensor.Value class="form-control" id="Value" PlaceHolder="Please enter a decimal value." /></td>
+                </tr>
             }
 
 
@@ -87,7 +88,7 @@ else
         </table>
     </EditForm>
 
-   
+
 }
 
 @code {
@@ -95,15 +96,21 @@ else
     public string sensortype { get; set; }
     [Parameter]
     public string sensorvalue { get; set; }
+    [Parameter]
+    public string sensorvalue2 { get; set; }
+    [Parameter]
+    public string sensorvalue3 { get; set; }
 
     //@onselectionchange="@(() => { StateHasChanged(); })"
+
+    char decimalPointSubChar = Sensor.DecimalPointSubChar;
 
     double? value1 = null;
     double? value2 = null;
     double? value3 = null;
 
     bool accelerometer { get; set; } = false;
- string Result="Loading";
+    string Result = "Loading";
 
     private bool SensorAvailable { get; set; } = false;
 
@@ -125,7 +132,7 @@ else
         await base.OnInitializedAsync();
         NavigationManager.LocationChanged += LocationChanged;
 
-        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("Sensor");
+        decimalPointSubChar = Sensor.DecimalPointSubChar;
 
         var result = await Http.PostAsJsonAsync<bool>("Sensor", true);
 
@@ -141,16 +148,38 @@ else
             {
                 _Sensor.SensorType = (SensorType)obj;
             }
-            //SensorType? val = (SensorType)Enum.Parse(typeof(SensorType), sensortype);
-            //if (val != null)
-            //    _Sensor.SensorType = (SensorType)val;
         }
         _Sensor.Value = 0.0;
         if (!string.IsNullOrEmpty(sensorvalue))
         {
             double val;
+            sensorvalue = sensorvalue.ToUpper().Replace('X', '.');
             if (double.TryParse(sensorvalue, out val))
                 _Sensor.Value = val;
+        }
+        if ((_Sensor.SensorType == SensorType.accelerometer) || (_Sensor.SensorType == SensorType.environment))
+        {
+            value1 = _Sensor.Value;
+            _Sensor.Value = null;
+
+            if (!string.IsNullOrEmpty(sensorvalue2))
+            {
+                double val;
+                sensorvalue2 = sensorvalue2.ToUpper().Replace('X', '.');
+                if (double.TryParse(sensorvalue2, out val))
+                    value2 = val;
+                else
+                    value2 = 0.0;
+            }
+            if (!string.IsNullOrEmpty(sensorvalue3))
+            {
+                double val;
+                sensorvalue3 = sensorvalue3.ToUpper().Replace('X', '.');
+                if (double.TryParse(sensorvalue2, out val))
+                    value3 = val;
+                else
+                    value3 = 0.0;
+            }
         }
         SensorAvailable = true;
         StateHasChanged();
