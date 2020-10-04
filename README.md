@@ -1,5 +1,5 @@
 # BlazorSensors
-A Blazor WASM App simuoating sensors on the client, with the server sending the data to an IoT Hub.
+A Blazor WASM App simuulating sensors on the client, with the server sending the data to an IoT Hub.
 
 > A Blazor WebAssembly app (with PWA set).  
 Simulates an IoT Device with a Tempedrature, Humidity or Acceleraometer sensor.  
