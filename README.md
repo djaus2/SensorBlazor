@@ -1,4 +1,4 @@
-# Blazor Simulated IoT Hub Device Sensors
+# Blazor Simulated IoT Hub Device with Sensors
 A Blazor WASM App simuulating sensors on the client, with the server sending the data to an IoT Hub.
 
 > A Blazor WebAssembly app (with PWA set).  
@@ -9,7 +9,7 @@ That is then sent to the Service which then forwards it as an IoT Hub message to
 ## Pages:
 - **Start Service**
   - Start service on Server to monitor http Posts from Client.
-  - Client will post IOT Hub Sensor data as Json string.
+  - Client will Post IoT Hub Sensor data as Json string to Server.
   - When received, form message and send to IoT Hub
 - **Stop Service**
   - Stop that service on Server.
