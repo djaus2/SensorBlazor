@@ -1,4 +1,4 @@
-# BlazorSensors
+# Blazor Simulated IoT Hub Device Sensors
 A Blazor WASM App simuulating sensors on the client, with the server sending the data to an IoT Hub.
 
 > A Blazor WebAssembly app (with PWA set).  
