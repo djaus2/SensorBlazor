@@ -19,7 +19,7 @@
 else
 {
 
-    <EditForm OnValidSubmit=@SendDummy Model="@_Sensor">
+    <EditForm  Model="@_Sensor">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
@@ -86,6 +86,7 @@ else
 
 
 @code {
+
     [Parameter]
     public string sensortype { get; set; }
     [Parameter]
@@ -108,12 +109,13 @@ else
 
     private bool SensorAvailable { get; set; } = false;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnParametersSetAsync()
     {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
-            await Send();
+        await base.OnParametersSetAsync();
+        SetupSensor();
+        await Send();
     }
+
 
     void LocationChanged(object sender, LocationChangedEventArgs e)
     {
@@ -127,8 +129,10 @@ else
     {
         await base.OnInitializedAsync();
         NavigationManager.LocationChanged += LocationChanged;
+    }
 
-
+    void SetupSensor()
+    {
         //var result = await Http.PostAsJsonAsync<bool>("Sensor", true);
 
         Guid guid = Guid.NewGuid();
@@ -178,7 +182,6 @@ else
             }
         }
         SensorAvailable = true;
-        StateHasChanged();
     }
 
     private Sensor _Sensor { get; set; }
@@ -204,9 +207,6 @@ else
         StateHasChanged();
     }
 
-    private async Task SendDummy()
-    {
-    }
 
     private void Fred(MouseEventArgs mouseEventArgs)
     {

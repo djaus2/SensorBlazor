@@ -1,4 +1,3 @@
-@page "/"
 @page "/sendsensordata"
 @page "/sendsensordata/{sensortype}/{sensorvalue}"
 @page "/sendsensordata/{sensortype}/{sensorvalue}/{sensorvalue2}/{sensorvalue3}"
@@ -8,7 +7,7 @@
 
 @inject NavigationManager NavigationManager
 
-<h1>Send Sensor Values to IoTHub</h1>
+<h1>Send Sensor Values to IoT Hub</h1>
 
 <p>Auto starts the Service if not running.</p>
 
@@ -114,11 +113,13 @@ else
 
     private bool SensorAvailable { get; set; } = false;
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        base.OnAfterRender(firstRender);
+        if (firstRender)
+            await base.OnAfterRenderAsync(firstRender);
     }
 
+    
     void LocationChanged(object sender, LocationChangedEventArgs e)
     {
         string navigationMethod = e.IsNavigationIntercepted ? "HTML" : "code";

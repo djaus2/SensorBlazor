@@ -1,3 +1,58 @@
-﻿@page "/blank/"
+﻿@page "/"
 
-<h1>Blank</h1>
+<h1>Blazor Simulated Azure IoT Hub Device</h1>
+
+<font color="blue">A Blazor WebAssembly app <i>(with PWA set)</i>.<br/>
+Simulates an IoT Device with a Tempedrature, Humidity or Acceleraometer sensor.<br />
+Can choose sensor type and set data in client.<br/>
+That is then sent to the Service which then forwards it as an IoT Hub message to an Azure IoT Hub.</font><br/>
+<br/>
+IoT Hub Device Connection String is embedded in Server appsettings.json<br/>
+
+<h2>Pages:</h2>
+<ul>
+    <li>
+        <b>Start Service</b>
+        <ul>
+            <li>Start service on Server to monitor http Posts from Client.</li>
+            <li>Client will post IOT Hub Sensor data as Json string.</li>
+            <li>When received, form message and send to IoT Hub</li>
+        </ul>
+    </li>
+    <li><b>Stop Service</b>
+        <ul>
+            <li>Stop that service on Server.</li>
+        </ul>
+    </li>
+    <li>
+        <b>Send Data</b>
+        <ul>
+            <li>Set sensor data ready to send
+                <ul>
+                    <li>Choose sensor type</li>
+                    <li>Set value/s</li>
+                </ul></li>
+            <li>Then Post data</li>
+        </ul>
+    </li>
+    <li>
+        <b>Direct Temp sample</b>
+        <ul>
+            <li>As per <b><i>Send Data</i></b> bur comes with preconfigured Temperature data.</li>
+            <li>Auto-sends when navigated to.</li>
+        </ul>
+    </li>
+    <li>
+        <b>Direct Hunid sample</b>
+        <ul>
+            <li>As per <b><i>Send Data</i></b> bur comes with preconfigured Hunidity data.</li>
+            <li>Auto-sends when navigated to.</li>
+        </ul>
+    </li>
+    <li>
+        <ul>
+            <li>As per <b><i>Send Data</i></b> bur comes with preconfigured Accelerometer data.</li>
+            <li>Auto-sends when navigated to.</li>
+        </ul>
+    </li>
+</ul>
