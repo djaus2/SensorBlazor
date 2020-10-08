@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSensorApp.Client", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSensorApp.Shared", "Shared\BlazorSensorApp.Shared.csproj", "{E323BE7D-2675-4C95-90D2-3C3B663AB858}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleApp", "SimulatedSensorConsoleApp\SimulatedSensorConsoleApp.csproj", "{64E5246F-68D0-43D4-A9A1-852F5B5236BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{E323BE7D-2675-4C95-90D2-3C3B663AB858}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E323BE7D-2675-4C95-90D2-3C3B663AB858}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E323BE7D-2675-4C95-90D2-3C3B663AB858}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64E5246F-68D0-43D4-A9A1-852F5B5236BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64E5246F-68D0-43D4-A9A1-852F5B5236BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64E5246F-68D0-43D4-A9A1-852F5B5236BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64E5246F-68D0-43D4-A9A1-852F5B5236BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
