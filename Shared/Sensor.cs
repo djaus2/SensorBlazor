@@ -23,5 +23,11 @@ namespace BlazorSensorApp.Shared
 
     }
 
+    public class AppSettings
+    {
+        public static string evIOTHUB_DEVICE_CONN_STRING { get; set; }
+        public string IOTHUB_DEVICE_CONN_STRING { get; set; }
+    }
+
     public enum SensorType {temperature,pressure,humidity,luminosity,accelerometer,environment,sswitch}
 }

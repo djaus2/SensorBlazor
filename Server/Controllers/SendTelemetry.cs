@@ -37,6 +37,8 @@ namespace BlazorSensorApp.Server.Controllers
         public static void SendMessage(Sensor _Sensor)
         {
             Sensor = _Sensor;
+            //while (SensorEvent.Set)
+            //    await Task.Delay(250);
             SensorEvent.Set();
         }
 
@@ -54,6 +56,8 @@ namespace BlazorSensorApp.Server.Controllers
             System.Diagnostics.Debug.WriteLine("===== Starting waiting for Messages =====");
             while (KeepRunning)
             {
+                System.Diagnostics.Debug.WriteLine("===== Resetting Wait =====");
+                SensorEvent.Reset();
                 System.Diagnostics.Debug.WriteLine("===== Waiting =====");
                 SensorEvent.WaitOne();
                 System.Diagnostics.Debug.WriteLine("===== Done Waiting =====");
@@ -77,14 +81,14 @@ namespace BlazorSensorApp.Server.Controllers
             System.Diagnostics.Debug.WriteLine("===== Finished waiting for Messages =====");
         }
 
-        private static AutoResetEvent SensorEvent;
+        private static EventWaitHandle SensorEvent;
         public static async Task StartMessageSending()
         {
             System.Diagnostics.Debug.WriteLine("===== Starting StartMessageSending =====");
             KeepRunning = true;
-            SensorEvent = new AutoResetEvent(false);
+            SensorEvent = new EventWaitHandle(false, EventResetMode.ManualReset);
 
-            s_connectionString = "HostName=BlazeMe3.azure-devices.net;DeviceId=DevBlaze;SharedAccessKey=5FAHd4pecYnX7P9Y7XclgPV+QeFB4s41l6xykR81dnE=";
+            s_connectionString = Shared.AppSettings.evIOTHUB_DEVICE_CONN_STRING;
 
             System.Diagnostics.Debug.WriteLine("Code from IoT Hub Quickstarts from Azure IoT Hub SDK");
             System.Diagnostics.Debug.WriteLine("Using Env Var IOTHUB_DEVICE_CONN_STRING = " + s_connectionString);

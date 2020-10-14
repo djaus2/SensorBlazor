@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using BlazorSensorApp.Shared;
+using System.IO;
 
 namespace BlazorSensorApp.Server
 {
@@ -14,6 +16,9 @@ namespace BlazorSensorApp.Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            var mySettingsConfig = new AppSettings();
+           configuration.GetSection("AppSettings").Bind(mySettingsConfig);
+           Shared.AppSettings.evIOTHUB_DEVICE_CONN_STRING = mySettingsConfig.IOTHUB_DEVICE_CONN_STRING;
         }
 
         public IConfiguration Configuration { get; }
@@ -41,6 +46,9 @@ namespace BlazorSensorApp.Server
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+         
+
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();

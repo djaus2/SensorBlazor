@@ -22,9 +22,9 @@ namespace ConsoleApp1
 
             var builder = new ConfigurationBuilder()
                            .SetBasePath(Directory.GetCurrentDirectory())
-                           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                            //.AddUserSecrets<Program>()
-                           //.AddEnvironmentVariables();
+                           .AddEnvironmentVariables();
 
             IConfigurationRoot configuration = builder.Build();
             var mySettingsConfig = new AppSettings();
@@ -47,7 +47,6 @@ namespace ConsoleApp1
                 Guid guid = Guid.NewGuid();
                 long TimeStamp = DateTime.Now.Ticks;
                 Sensor _Sensor = new Sensor();
-                //_Sensor.No = 137;
                 _Sensor.Id = guid.ToString();
                 _Sensor.SensorType = sensorType;
                 _Sensor.TimeStamp = TimeStamp;

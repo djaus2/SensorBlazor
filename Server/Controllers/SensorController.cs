@@ -17,9 +17,18 @@ namespace BlazorSensorApp.Server.Controllers
 
         private readonly ILogger<SensorController> logger;
 
+        private static SimulatedDeviceCS _SimulatedDeviceCS;
+
         public SensorController(ILogger<SensorController> logger)
         {
             this.logger = logger;
+            if (_SimulatedDeviceCS == null)
+                _SimulatedDeviceCS = new SimulatedDeviceCS();
+        }
+
+        ~SensorController()
+        {
+            _SimulatedDeviceCS = null;
         }
 
 
@@ -45,16 +54,16 @@ namespace BlazorSensorApp.Server.Controllers
                 try
                 {
                     sensor = JsonConvert.DeserializeObject<Sensor>(json);
-                    if (sensor != null)
-                    {
-                        if (!SimulatedDevice.KeepRunning)
-                            await SimulatedDevice.StartMessageSending();
-                        SimulatedDevice.SendMessage(sensor);
+                    //if (sensor != null)
+                    //{
+                    //    if (!SimulatedDevice.KeepRunning)
+                    //        await SimulatedDevice.StartMessageSending();
+                        await _SimulatedDeviceCS.StartSendDeviceToCloudMessageAsync(sensor);
                         //await Task.Delay(1000);
                         return Ok(sensor.Id);
-                    }
-                    else
-                        return BadRequest();
+                    //}
+                    //else
+                    //    return BadRequest();
                 }
                 catch (Exception)
                 {

@@ -81,6 +81,12 @@ else
                 </tr>
             }
 
+        <tr>
+            <td align="right" valign="middle"><label for="Period"><i>Period (in sec):&nbsp;</i></label></td>
+            <td valign="middle"><InputNumber @bind-Value=@Period class="form-control" id="Value" PlaceHolder="Please enter period between messages in seconds." /></td>
+            <td align="right" valign="middle"><label for="NumSend"><i>Number To Send:&nbsp;</i></label></td>
+            <td valign="middle"><InputNumber @bind-Value=@NumToSend class="form-control" id="Value" PlaceHolder="Please enter number of messages to send." /></td>
+        </tr>
 
             <tr><td><input type="submit" class="btn btn-primary" value="Send" /></td><td></td></tr>
             <tr><td align="right"><i>Result:&nbsp:</i></td><td><font color="Blue"><b>@Result</b></font></td></tr>
@@ -99,6 +105,10 @@ else
     public string sensorvalue2 { get; set; }
     [Parameter]
     public string sensorvalue3 { get; set; }
+
+
+    public int Period;
+    public int NumToSend = 1;
 
     //@onselectionchange="@(() => { StateHasChanged(); })"
 
@@ -119,7 +129,7 @@ else
             await base.OnAfterRenderAsync(firstRender);
     }
 
-    
+
     void LocationChanged(object sender, LocationChangedEventArgs e)
     {
         string navigationMethod = e.IsNavigationIntercepted ? "HTML" : "code";
@@ -140,7 +150,7 @@ else
         Guid guid = Guid.NewGuid();
         long TimeStamp = DateTime.Now.Ticks;
         _Sensor = new Sensor { Id = guid.ToString(), TimeStamp = TimeStamp };
-        _Sensor.SensorType = SensorType.accelerometer;
+        _Sensor.SensorType = SensorType.temperature;
         _Sensor.No = Sensor.Count;
         if (!string.IsNullOrEmpty(sensortype))
         {
@@ -189,6 +199,17 @@ else
     private Sensor _Sensor { get; set; }
 
     private async Task Send()
+    {
+        for (int i = 0; i < NumToSend; i++)
+        {
+            await _Send();
+            if (i!= NumToSend -1)
+            await Task.Delay(TimeSpan.FromSeconds(Period));
+        }
+    }
+
+
+    private async Task _Send()
     {
         Result = "Busy";
         StateHasChanged();
