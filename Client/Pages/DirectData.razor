@@ -19,9 +19,7 @@
 else
 {
 
-    <EditForm  Model="@_Sensor">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+    <@EditForm  Model="@_Sensor">
 
         <table>
             <tr>
@@ -79,7 +77,7 @@ else
 
             <tr><td align="right"><i>Result:&nbsp:</i></td><td><font color="Blue"><b>@Result</b></font></td></tr>
         </table>
-    </EditForm>
+    </@EditForm>
 }
 
 
@@ -96,9 +94,6 @@ else
     [Parameter]
     public string sensorvalue3 { get; set; }
 
-    //@onselectionchange="@(() => { StateHasChanged(); })"
-
-    char decimalPointSubChar = Sensor.DecimalPointSubChar;
 
     double? value1 = null;
     double? value2 = null;
@@ -163,7 +158,7 @@ else
         if ((_Sensor.SensorType == SensorType.accelerometer) || (_Sensor.SensorType == SensorType.environment))
         {
             value1 = _Sensor.Value;
-            _Sensor.Value = null;
+            _Sensor.Value = 0;
             if (!string.IsNullOrEmpty(sensorvalue2))
             {
                 double val;

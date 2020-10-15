@@ -3,6 +3,7 @@
 @page "/sendsensordata/{sensortype}/{sensorvalue}/{sensorvalue2}/{sensorvalue3}"
 @using BlazorSensorApp.Shared
 @using System.Net.Http
+@using static System.Random
 @inject HttpClient Http
 
 @inject NavigationManager NavigationManager
@@ -81,22 +82,32 @@ else
                 </tr>
             }
 
-        <tr>
-            <td align="right" valign="middle"><label for="Period"><i>Period (in sec):&nbsp;</i></label></td>
-            <td valign="middle"><InputNumber @bind-Value=@Period class="form-control" id="Value" PlaceHolder="Please enter period between messages in seconds." /></td>
-            <td align="right" valign="middle"><label for="NumSend"><i>Number To Send:&nbsp;</i></label></td>
-            <td valign="middle"><InputNumber @bind-Value=@NumToSend class="form-control" id="Value" PlaceHolder="Please enter number of messages to send." /></td>
-        </tr>
+            <tr>
+                <td align="right" valign="middle"><label for="Period"><i>Period (in sec):&nbsp;</i></label></td>
+                <td valign="middle"><InputNumber @bind-Value=@Period class="form-control" id="Value" PlaceHolder="Please enter period between messages in seconds." /></td>
+                <td align="right" valign="middle"><label for="NumSend"><i>Number To Send:&nbsp;</i></label></td>
+                <td valign="middle"><InputNumber @bind-Value=@NumToSend class="form-control" id="Value" PlaceHolder="Please enter number of messages to send." /></td>
+            </tr>
 
             <tr><td><input type="submit" class="btn btn-primary" value="Send" /></td><td></td></tr>
             <tr><td align="right"><i>Result:&nbsp:</i></td><td><font color="Blue"><b>@Result</b></font></td></tr>
         </table>
     </EditForm>
 
+    <p>
+        <label>
+            <b>Number Sent:</b>&nbsp;<font color="blue">@numSent</font>
+        </label>
+    </p>
+    <p>
+        <label><i>To send random data set more than one to send.</i></label>
+    </p>
+
 
 }
 
-@code {
+@code
+{
     [Parameter]
     public string sensortype { get; set; }
     [Parameter]
@@ -106,13 +117,12 @@ else
     [Parameter]
     public string sensorvalue3 { get; set; }
 
-
-    public int Period;
-    public int NumToSend = 1;
+    public int numSent = 0;
+    public int Period = 1;
+    public int NumToSend = 5;
 
     //@onselectionchange="@(() => { StateHasChanged(); })"
 
-    char decimalPointSubChar = Sensor.DecimalPointSubChar;
 
     double? value1 = null;
     double? value2 = null;
@@ -143,10 +153,15 @@ else
         await base.OnInitializedAsync();
         NavigationManager.LocationChanged += LocationChanged;
 
-        var result = await Http.PostAsJsonAsync<bool>("Sensor", true);
+        //var result = await Http.PostAsJsonAsync<bool>("Sensor", true);
         Result = "Started";
+        Guid guid = Guid.NewGuid();
+        long TimeStamp = DateTime.Now.Ticks;
+        _Sensor = new Sensor { Id = guid.ToString(), TimeStamp = TimeStamp };
+        SensorAvailable = true;
         StateHasChanged();
-
+        return;
+        /*
         Guid guid = Guid.NewGuid();
         long TimeStamp = DateTime.Now.Ticks;
         _Sensor = new Sensor { Id = guid.ToString(), TimeStamp = TimeStamp };
@@ -171,7 +186,7 @@ else
         if ((_Sensor.SensorType == SensorType.accelerometer) || (_Sensor.SensorType == SensorType.environment))
         {
             value1 = _Sensor.Value;
-            _Sensor.Value = null;
+            _Sensor.Value = 0;
 
             if (!string.IsNullOrEmpty(sensorvalue2))
             {
@@ -194,37 +209,150 @@ else
         }
         SensorAvailable = true;
         StateHasChanged();
+        */
     }
 
     private Sensor _Sensor { get; set; }
 
     private async Task Send()
     {
-        for (int i = 0; i < NumToSend; i++)
+        Sensor Sensor = null;
+        if (NumToSend == 1)
         {
-            await _Send();
-            if (i!= NumToSend -1)
-            await Task.Delay(TimeSpan.FromSeconds(Period));
+            numSent = 0;
+            StateHasChanged();
+            if ((_Sensor.SensorType == SensorType.accelerometer) || (_Sensor.SensorType == SensorType.environment))
+            {
+                _Sensor.Values = new List<double> { (double)value1, (double)value2, (double)value3 };
+            }
+            Guid guid = Guid.NewGuid();
+            long TimeStamp = DateTime.Now.Ticks;
+            _Sensor.No = ++Sensor.Count;
+            _Sensor.Id = guid.ToString();
+            _Sensor.TimeStamp = TimeStamp;
+            Sensor = _Sensor;
+            await _Send(Sensor);
+            numSent = 1;
+            StateHasChanged();
+        }
+        else
+        {
+            try
+            {
+                double val1;
+                double val2;
+                double val3;
+                GenFu.Configure<Sensor>()
+                .Fill(b => b.Id, () => { return GetGuid(); })
+                .Fill(b => b.TimeStamp, () => { return GeTimeStamp(); })
+                .Fill(p => p.No)
+                .WithinRange(1, 100);
+                var Sensors = GenFu.ListOf<Sensor>(NumToSend);
+                Random random = new Random();
+                for (int i = 0; i < NumToSend; i++)
+                {
+                    numSent = i;
+                    StateHasChanged();
+                    Sensor = Sensors[i];
+                    Sensor.No = i;
+                    double maximum = 0;
+                    double minimum = 0;
+
+                    switch (Sensor.SensorType)
+                    {
+                        case SensorType.temperature:
+                            maximum = 30;
+                            minimum = 10;
+                            break;
+                        case SensorType.pressure:
+                            maximum = 870;
+                            minimum = 1084;
+                            break;
+                        case SensorType.humidity:
+                            maximum = 0;
+                            minimum = 100;
+                            break;
+                        case SensorType.luminosity:
+                            maximum = 0;
+                            minimum = 300;
+                            break;
+                        case SensorType.sswitch:
+                            var val = random.NextDouble() * 10;
+                            Sensor.State = (val > 5.0);
+                            break;
+                    }
+                    if ((maximum + minimum) != 0)
+                        Sensor.Value = random.NextDouble() * (maximum - minimum) + minimum;
+
+                    maximum = 0;
+                    minimum = 0;
+                    Sensor.Values = null;
+                    switch (Sensor.SensorType)
+                    {
+
+                        case SensorType.accelerometer:
+                            maximum = 10;
+                            minimum = 0;
+                            val1 = random.NextDouble() * (maximum - minimum) + minimum;
+                            val2 = random.NextDouble() * (maximum - minimum) + minimum;
+                            val3 = random.NextDouble() * (maximum - minimum) + minimum;
+                            Sensor.Values = new List<double> { val1, val2, val3 };
+                            break;
+                        case SensorType.environment:
+                            maximum = 30;
+                            val1 = random.NextDouble() * (maximum - minimum) + minimum;
+                            maximum = 870;
+                            minimum = 1084;
+                            val2 = random.NextDouble() * (maximum - minimum) + minimum;
+                            maximum = 0;
+                            minimum = 100;
+                            val3 = random.NextDouble() * (maximum - minimum) + minimum;
+                            Sensor.Values = new List<double> { val1, val2, val3 };
+                            break;
+                    }
+
+                    await _Send(Sensor);
+                    if (i != NumToSend - 1)
+                        await Task.Delay(TimeSpan.FromSeconds(Period));
+                }
+                numSent = NumToSend;
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
         }
     }
 
-
-    private async Task _Send()
+    private string GetGuid()
     {
+        return Guid.NewGuid().ToString();
+    }
+
+    private long GeTimeStamp()
+    {
+        return DateTime.Now.Ticks;
+    }
+
+
+    private async Task _Send(Sensor sensor)
+    {
+        _Sensor = sensor;
         Result = "Busy";
         StateHasChanged();
-        //accelerometer = !accelerometer;
-        //StateHasChanged();
-        if ((_Sensor.SensorType == SensorType.accelerometer) || (_Sensor.SensorType == SensorType.environment))
-        {
-            _Sensor.Values = new List<double> { (double)value1, (double)value2, (double)value3 };
-        }
-        Guid guid = Guid.NewGuid();
-        long TimeStamp = DateTime.Now.Ticks;
-        _Sensor.No = ++Sensor.Count;
-        _Sensor.Id = guid.ToString();
-        _Sensor.TimeStamp = TimeStamp;
-        var result = await Http.PostAsJsonAsync<Sensor>("Sensor", _Sensor);
+        ////accelerometer = !accelerometer;
+        ////StateHasChanged();
+        //if ((_Sensor.SensorType == SensorType.accelerometer) || (_Sensor.SensorType == SensorType.environment))
+        //{
+        //    _Sensor.Values = new List<double> { (double)value1, (double)value2, (double)value3 };
+        //}
+        //Guid guid = Guid.NewGuid();
+        //long TimeStamp = DateTime.Now.Ticks;
+        //_Sensor.No = ++Sensor.Count;
+        //_Sensor.Id = guid.ToString();
+        //_Sensor.TimeStamp = TimeStamp;
+        var result = await Http.PostAsJsonAsync<Sensor>("Sensor", sensor);
         System.Diagnostics.Debug.WriteLine(result.StatusCode);
         Result = result.StatusCode.ToString();
         StateHasChanged();
