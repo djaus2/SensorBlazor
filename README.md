@@ -10,11 +10,11 @@ Need to update this
 
 ## Pages:
 - ~~**Start Service**~~
-  - Start service on Server to monitor http Posts from Client.
-  - Client will Post IoT Hub Sensor data as Json string to Server.
-  - When received, form message and send to IoT Hub
+  - ~~Start service on Server to monitor http Posts from Client.~~
+  - ~~Client will Post IoT Hub Sensor data as Json string to Server.~~
+  - ~~When received, form message and send to IoT Hub~~
 - ~~**Stop Service**~~
-  - Stop that service on Server.
+  - ~~Stop that service on Server.~~
 - **Send Data**
   - Set sensor data ready to send
     - Set number to send to 1.
