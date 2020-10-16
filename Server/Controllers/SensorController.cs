@@ -43,11 +43,7 @@ namespace BlazorSensorApp.Server.Controllers
             if (bool.TryParse(json, out state))
             {
                 await Task.Delay(333);
-                if (state)
-                    Task.Run(() => SimulatedDevice.StartMessageSending()).GetAwaiter();
-                else
-                    SimulatedDevice.StopMessageSending();
-                return Ok(SimulatedDevice.KeepRunning);
+                return Ok(true);
             }
             else 
             {

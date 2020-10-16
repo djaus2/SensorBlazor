@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-<h1> Blazor Simulated Azure IoT Hub Device with Sensors 4</h1>
+<h1> Blazor Simulated Azure IoT Hub Device with Sensors</h1>
 
 <font color="blue">A Blazor WebAssembly app <i>(with PWA set)</i>.<br/>
 Simulates an IoT Device with a Tempedrature, Humidity or Acceleraometer sensor.<br />
@@ -12,28 +12,25 @@ IoT Hub Device Connection String is embedded in Server appsettings.json<br/>
 <h2>Pages:</h2>
 <ul>
     <li>
-        <b>Start Service</b>
-        <ul>
-            <li>Start service on Server to monitor http Posts from Client.</li>
-            <li>Client will Post IoT Hub Sensor data as Json string to the Server.</li>
-            <li>When received, form message and send to IoT Hub</li>
-        </ul>
-    </li>
-    <li><b>Stop Service</b>
-        <ul>
-            <li>Stop that service on Server.</li>
-        </ul>
-    </li>
-    <li>
         <b>Send Data</b>
         <ul>
-            <li>Set sensor data ready to send
+            <li>
+                Set sensor data ready to send
                 <ul>
                     <li>Choose sensor type</li>
                     <li>Set value/s</li>
-                </ul></li>
-            <li>Then Post data</li>
+                    <li>Set to only one message to send</li>
+                </ul>
+            </li>
+            <li>Then press [Send]</li>
         </ul>
+        <b>Alternatively can auto-generate random sensor data to send</b>
+        <ul>
+            <li>Set number of messages to send</li>
+            <li>Set period between messages</li>
+            <li>Then press [Send]</li>
+            <li><i>Sensor Type with each message is random as well.</i></li>
+        </ul>     
     </li>
     <li>
         <b>Direct Temp sample</b>
@@ -50,6 +47,7 @@ IoT Hub Device Connection String is embedded in Server appsettings.json<br/>
         </ul>
     </li>
     <li>
+        <b>Direct Accel sample</b>
         <ul>
             <li>As per <b><i>Send Data</i></b> bur comes with preconfigured Accelerometer data.</li>
             <li>Auto-sends when navigated to.</li>
