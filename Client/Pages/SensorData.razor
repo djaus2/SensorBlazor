@@ -22,19 +22,19 @@ else
         <ValidationSummary />
         <table>
             <tr>
-                <td align="right" valign="middle"><i>No:&nbsp;</i></td>
+                <td align="right" valign="middle"><b><i>No:&nbsp;</i></b></td>
                 <td valign="middle"><b>@_Sensor.No</b></td>
             </tr>
             <tr>
-                <td align="right" valign="middle"><i>Id:&nbsp;</i></td>
+                <td align="right" valign="middle"><b><i>Id:&nbsp;</i></b></td>
                 <td valign="middle"><b>@_Sensor.Id</b></td>
             </tr>
             <tr>
-                <td align="right" valign="middle"><i>TimeStamp:&nbsp;</i></td>
+                <td align="right" valign="middle"><b><i>TimeStamp:&nbsp;</i></b></td>
                 <td valign="middle"><b>@_Sensor.TimeStamp</b></td>
             </tr>
             <tr>
-                <td align="right" valign="middle"><i>Sensor Type:&nbsp;</i></td>
+                <td align="right" valign="middle"><b><i>Sensor Type:&nbsp;</i></b></td>
                 <td valign="middle">
                     <InputSelect @bind-Value="_Sensor.SensorType">
                         @foreach (var typ in Enum.GetValues(typeof(SensorType)))
@@ -88,7 +88,7 @@ else
                 <td valign="middle"><InputNumber @bind-Value=@NumToSend class="form-control" id="Value" PlaceHolder="Please enter number of messages to send." /></td>
             </tr>
             <tr>
-                <td align="right" valign="middle"><i>Use Random Sensor Type:</i></td>
+                <td align="right" valign="middle"><b><i>Use Random Sensor Type:</i></b></td>
                 <td align="left" valign="middle"><InputCheckbox @bind-Value=@SensorTypeIsRandom align="left" width="40" class="form-control" id="SensorTypeIsRandom" PlaceHolder="Is Random" /></td>
             </tr>
             <tr>
@@ -105,8 +105,9 @@ else
         
     </p>
     <p>
-        <label><i>To send random data, set Bumber To Send greater than one. Set period >0s as well.</i></label>
+        <label><i>To do multiple sends, set <b>Number To Send</b> greater than one. Set period >0s as well.</i></label>
     </p>
+    <p>Note: <i><b>Use Random Sensor Type</b>, if true, only applies to multiple sends.</i></p>
 
 
 }
