@@ -14,7 +14,7 @@
 *.userprefs
 
 # applicationsettings.json.txt in repository as a prototype
-applicationsettings.json
+appsettings.json
 
 # Mono auto generated files
 mono_crash.*
