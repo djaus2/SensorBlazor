@@ -22,19 +22,19 @@ else
         <ValidationSummary />
         <table>
             <tr>
-                <td align="right" valign="middle"><label><i>No:&nbsp;</i></label></td>
+                <td align="right" valign="middle"><i>No:&nbsp;</i></td>
                 <td valign="middle"><b>@_Sensor.No</b></td>
             </tr>
             <tr>
-                <td align="right" valign="middle"><label><i>Id:&nbsp;</i></label></td>
+                <td align="right" valign="middle"><i>Id:&nbsp;</i></td>
                 <td valign="middle"><b>@_Sensor.Id</b></td>
             </tr>
             <tr>
-                <td align="right" valign="middle"><label><i>TimeStamp:&nbsp;</i></label></td>
+                <td align="right" valign="middle"><i>TimeStamp:&nbsp;</i></td>
                 <td valign="middle"><b>@_Sensor.TimeStamp</b></td>
             </tr>
             <tr>
-                <td align="right" valign="middle"><label><i>Sensor Type:&nbsp;</i></label></td>
+                <td align="right" valign="middle"><i>Sensor Type:&nbsp;</i></td>
                 <td valign="middle">
                     <InputSelect @bind-Value="_Sensor.SensorType">
                         @foreach (var typ in Enum.GetValues(typeof(SensorType)))
@@ -47,26 +47,26 @@ else
             @if (_Sensor.SensorType == SensorType.accelerometer)
             {
                 <tr>
-                    <td align="right" width="50px" valign="middle"><label for="Value"><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
-                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value1" PlaceHolder="X value." /></td>
-                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value2" PlaceHolder="Y value." /></td>
-                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value3" PlaceHolder="Z value." /></td>
+                    <td align="right" width="50px" valign="middle"><b><i>Accelerometer (X,Y,Z):&nbsp;</i></b></td>
+                    <td valign="middle" width="100px">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value1" PlaceHolder="X value." /></td>
+                    <td valign="middle" width="100px">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value2" PlaceHolder="Y value." /></td>
+                    <td valign="middle" width="100px">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value3" PlaceHolder="Z value." /></td>
                 </tr>
             }
             else if (_Sensor.SensorType == SensorType.environment)
             {
                 <tr>
-                    <td align="right" width="50px" valign="middle"><label for="Value"><i>Environment:&nbsp;</i></label></td>
-                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value4" PlaceHolder="Temperature value." /></td>
-                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value5" PlaceHolder="Humidity value." /></td>
-                    <td valign="middle" width="80px">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value6" PlaceHolder="Pressure value." /></td>
+                    <td align="right" width="50px" valign="middle"><b><i>Environment:&nbsp;</i></b></td>
+                    <td valign="middle" width="100px">&nbsp;<InputNumber @bind-Value=@value1 class="form-control" id="Value4" PlaceHolder="Temperature value." /></td>
+                    <td valign="middle" width="100px">&nbsp;<InputNumber @bind-Value=@value2 class="form-control" id="Value5" PlaceHolder="Humidity value." /></td>
+                    <td valign="middle" width="100px">&nbsp;<InputNumber @bind-Value=@value3 class="form-control" id="Value6" PlaceHolder="Pressure value." /></td>
                 </tr>
             }
             else if (_Sensor.SensorType == SensorType.sswitch)
             {
 
                 <tr>
-                    <td align="right" valign="middle"><label for="Switch"><i>Value:&nbsp;</i></label></td>
+                    <td align="right" valign="middle"><b><i>Value:&nbsp;</i></b></td>
                     <td valign="middle"><InputCheckbox @bind-Value=@_Sensor.State class="form-control" id="Switch" PlaceHolder="Switch off and on" /></td>
                 </tr>
             }
@@ -74,27 +74,35 @@ else
             {
 
                 <tr>
-                    <td align="right" valign="middle"><label for="Value"><i>Value:&nbsp;</i></label></td>
+                    <td align="right" valign="middle"><b><i>Value:&nbsp;</i></b></td>
                     <td valign="middle"><InputNumber @bind-Value=@_Sensor.Value class="form-control" id="Value" PlaceHolder="Please enter a decimal value." /></td>
                 </tr>
             }
 
             <tr>
-                <td align="right" valign="middle"><label for="Period"><i>Period (in sec):&nbsp;</i></label></td>
+                <td align="right" valign="middle"><b><i>Period (in sec):&nbsp;</i></b></td>
                 <td valign="middle"><InputNumber @bind-Value=@Period class="form-control" id="Value" PlaceHolder="Please enter period between messages in seconds." /></td>
-                <td align="right" valign="middle"><label for="NumSend"><i>Number To Send:&nbsp;</i></label></td>
+            </tr>
+            <tr>
+                <td align="right" valign="middle"><b><i>Number To Send:&nbsp;</i></b></td>
                 <td valign="middle"><InputNumber @bind-Value=@NumToSend class="form-control" id="Value" PlaceHolder="Please enter number of messages to send." /></td>
             </tr>
-
-            <tr><td><input type="submit" class="btn btn-primary" value="Send" /></td><td></td></tr>
-            <tr><td align="right"><i>Result:&nbsp:</i></td><td><font color="Blue"><b>@Result</b></font></td></tr>
+            <tr>
+                <td align="right" valign="middle"><i>Use Random Sensor Type:</i></td>
+                <td align="left" valign="middle"><InputCheckbox @bind-Value=@SensorTypeIsRandom align="left" width="40" class="form-control" id="SensorTypeIsRandom" PlaceHolder="Is Random" /></td>
+            </tr>
+            <tr>
+                <td align="left" valign="middle"><b>Result:</b>&nbsp:<font color="Blue">@Result</font></td>
+                <td align="left" valign="middle"><b>Number Sent:</b>&nbsp;<font color="blue">@numSent</font></td>
+            </tr>
+            <tr>
+                <td><input type="submit" class="btn btn-primary" value="Send" /></td>
+            </tr>
         </table>
     </EditForm>
 
     <p>
-        <label>
-            <b>Number Sent:</b>&nbsp;<font color="blue">@numSent</font>
-        </label>
+        
     </p>
     <p>
         <label><i>To send random data, set Bumber To Send greater than one. Set period >0s as well.</i></label>
@@ -117,11 +125,12 @@ else
     public int numSent = 0;
     public int Period = 1;
     public int NumToSend = 5;
+    public bool SensorTypeIsRandom = true;
 
     //@onselectionchange="@(() => { StateHasChanged(); })"
 
 
-    double? value1 = null;
+        double? value1 = null;
     double? value2 = null;
     double? value3 = null;
 
@@ -251,6 +260,8 @@ else
                     numSent = i;
                     StateHasChanged();
                     Sensor = Sensors[i];
+                    if (!SensorTypeIsRandom)
+                        Sensor.SensorType = _Sensor.SensorType;
                     Sensor.No = i;
                     double maximum = 0;
                     double minimum = 0;
