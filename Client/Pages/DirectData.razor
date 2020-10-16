@@ -10,8 +10,6 @@
 
 <h1>Send Sensor Values to IoTHub</h1>
 
-<p>Requires the Service to be running.</p>
-
 @if (!SensorAvailable)
 {
     <p><em>Loading...</em></p>
@@ -19,65 +17,63 @@
 else
 {
 
-    <@EditForm  Model="@_Sensor">
-
-        <table>
-            <tr>
-                <td align="right" valign="middle"><label><i>No:&nbsp;</i></label></td>
-                <td valign="middle"><b>@_Sensor.No</b></td>
-            </tr>
-            <tr>
-                <td align="right" valign="middle"><label><i>Id:&nbsp;</i></label></td>
-                <td valign="middle"><b>@_Sensor.Id</b></td>
-            </tr>
-            <tr>
-                <td align="right" valign="middle"><label><i>TimeStamp:&nbsp;</i></label></td>
-                <td valign="middle"><b>@_Sensor.TimeStamp</b></td>
-            </tr>
-            <tr>
-                <td align="right" valign="middle"><label><i>Sensor Type:&nbsp;</i></label></td>
-                <td valign="middle">
-                    <label>@_Sensor.SensorType</label>
-                </td>
-            </tr>
-            @if (_Sensor.SensorType == SensorType.accelerometer)
-            {
+    <table>
+        <tr>
+            <td align="right" valign="middle"><label><i>No:&nbsp;</i></label></td>
+            <td valign="middle"><b>@_Sensor.No</b></td>
+        </tr>
+        <tr>
+            <td align="right" valign="middle"><label><i>Id:&nbsp;</i></label></td>
+            <td valign="middle"><b>@_Sensor.Id</b></td>
+        </tr>
+        <tr>
+            <td align="right" valign="middle"><label><i>TimeStamp:&nbsp;</i></label></td>
+            <td valign="middle"><b>@_Sensor.TimeStamp</b></td>
+        </tr>
+        <tr>
+            <td align="right" valign="middle"><label><i>Sensor Type:&nbsp;</i></label></td>
+            <td valign="middle">
+                <label>@_Sensor.SensorType</label>
+            </td>
+        </tr>
+        @if (_Sensor.SensorType == SensorType.accelerometer)
+        {
             <tr>
                 <td align="right" valign="middle" width="50px"><label><i>Accelerometer (X,Y,Z):&nbsp;</i></label></td>
                 <td valign="middle" width="50px">&nbsp;<label>@value1</label></td>
                 <td valign="middle" width="50px">&nbsp;<label>@value2</label></td>
                 <td valign="middle" width="50px">&nbsp;<label>@value3</label></td>
             </tr>
-            }
-            else if (_Sensor.SensorType == SensorType.environment)
-            {
+        }
+        else if (_Sensor.SensorType == SensorType.environment)
+        {
             <tr>
                 <td align="right" valign="middle" width="50px"><label><i>Environment:&nbsp;</i></label></td>
                 <td valign="middle" width="50px">&nbsp;<label>@value1</label></td>
                 <td valign="middle" width="50px">&nbsp;<label>@value2</label></td>
                 <td valign="middle" width="50px">&nbsp;<label>@value3</label></td>
             </tr>
-            }
-            else if (_Sensor.SensorType == SensorType.sswitch)
-            {
+        }
+        else if (_Sensor.SensorType == SensorType.sswitch)
+        {
 
             <tr>
                 <td align="right" valign="middle"><label for="Switch"><i>Switch Value:&nbsp;</i></label></td>
                 <td valign="middle"><label>@_Sensor.State</label>></td>
             </tr>
-            }
-            else
-            {
+        }
+        else
+        {
 
             <tr>
                 <td align="right" valign="middle"><label for="Value"><i>Value:&nbsp;</i></label></td>
                 <td valign="middle"><label>@_Sensor.Value </label></td>
             </tr>
-            }
+        }
 
-            <tr><td align="right"><i>Result:&nbsp:</i></td><td><font color="Blue"><b>@Result</b></font></td></tr>
-        </table>
-    </@EditForm>
+        <tr><td align="right"><i>Result:&nbsp:</i></td><td><font color="Blue"><b>@Result</b></font></td></tr>
+    </table>
+
 }
 
 
