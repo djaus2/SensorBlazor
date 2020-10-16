@@ -9,8 +9,8 @@ Can choose sensor type and set data in client.
 That is then sent to the Service which then forwards it as an IoT Hub message to an Azure IoT Hub.
 
 ## Usage
-Enter require info in Servre\appsettings.json.txt and rename as appsettings.json
-Make sure it is included inteh Build as content
+Enter require info in Servre\appsettings.json.txt and rename as appsettings.json  
+Make sure **appsettings.json** is included in the Build as Content only.
 
 Need to update this
 
