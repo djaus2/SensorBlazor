@@ -26,13 +26,13 @@ Make sure **appsettings.json** is included in the Build as Content only.
 
 ## Pages:
 - **Send Data**
-  - Set sensor data ready to send
+  - Set sensor data and send (one message):
     - Set number to send to 1.
     - Choose sensor type
     - Set value/s
-  - Post data
-    - Set Number To Send to 1 to send set data.
-    - Or set number to send > 1 and will auto generate random data, including changing sensor type.
+    - Then Press [Send]
+  - Multiple Random data:
+    - Set number to send > 1 and will auto generate random data, including changing sensor type.
       - Option to disable random selection of Sensor Type
     - Set delay for this auto mode.
     - Then Press [Send]
@@ -45,3 +45,6 @@ Make sure **appsettings.json** is included in the Build as Content only.
 - **Direct Accelerometer sample**
   - As per Send Data bur comes with preconfigured Accelerometer data.
   - Auto-sends when navigated to.
+  
+  ## .NET Core app in Repository
+  Sends data to this service for onforwarding to IoT Hub. By forwarding to this serviuce, it doesnot need to know Hub Details. In that way, the Blazor Service acts and an IoT Hub Edge device.
