@@ -37,13 +37,13 @@ Make sure **appsettings.json** is included in the Build as Content only.
     - Set delay for this auto mode.
     - Then Press [Send]
 - **Direct Temperature sample**
-  - As per Send Data bur comes with preconfigured Temperature data.
+  - As per Send Data bur comes with one preconfigured Temperature datum.
   - Auto-sends when navigated to.
 - **Direct Hunidity sample**
-  - As per Send Data bur comes with preconfigured Hunidity data.
+  - As per Send Data bur comes with one preconfigured Hunidity datum.
   - Auto-sends when navigated to.
 - **Direct Accelerometer sample**
-  - As per Send Data bur comes with preconfigured Accelerometer data.
+  - As per Send Data bur comes with one preconfigured Accelerometer datum.
   - Auto-sends when navigated to.
   
   ## .NET Core app in Repository
