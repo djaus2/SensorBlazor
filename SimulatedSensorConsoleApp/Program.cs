@@ -16,8 +16,8 @@ namespace ConsoleApp1
     {
         static async Task Main()
         {
-            Console.WriteLine("Hello Sensor!");
-
+            Console.WriteLine("Hello Sensor! Press [Enter] when service is running.");
+            Console.ReadLine();
             
 
             var builder = new ConfigurationBuilder()
@@ -32,14 +32,27 @@ namespace ConsoleApp1
 
             string url = $"{ mySettingsConfig.Url}/{ mySettingsConfig.Api}";
 
-            await Send(url, SensorType.temperature, 67.8, null);
-            await Send(url, SensorType.pressure, 10001.2, null);
-            await Send(url, SensorType.accelerometer, 0, new List<double> { 0.789, 0.234, 0.456 });
+            int numToSend = mySettingsConfig.NumToSend;
+            Console.WriteLine("Sending {0} messages", numToSend);
 
+            await Send(100,url, SensorType.temperature, 67.8, null);
+            await Send(101,url, SensorType.pressure, 10001.2, null);
+            await Send(102,url, SensorType.accelerometer, 0, new List<double> { 0.789, 0.234, 0.456 });
+            await Task.Delay(1000);
+            Task[] myTasks = new Task[numToSend];
+            for (int i=0;i<myTasks.Length;i++)
+            {
+                myTasks[i]= Send(i,url, SensorType.temperature, 67.8, null);
+                await Task.Delay(250);
+            }
+
+            Task.WaitAll(myTasks);
             Console.WriteLine("Hello Sensor! End");
 
         }
-        static async Task Send(string url, SensorType sensorType, Double value, List<Double> values)
+
+        static int count = 0;
+        static async Task Send(int No,string url, SensorType sensorType, Double value, List<Double> values)
         {
             try
             {
@@ -47,6 +60,7 @@ namespace ConsoleApp1
                 Guid guid = Guid.NewGuid();
                 long TimeStamp = DateTime.Now.Ticks;
                 Sensor _Sensor = new Sensor();
+                _Sensor.No = No;
                 _Sensor.Id = guid.ToString();
                 _Sensor.SensorType = sensorType;
                 _Sensor.TimeStamp = TimeStamp;
@@ -74,6 +88,8 @@ namespace ConsoleApp1
         public  class AppSettings{
             public string Url { get; set; }
             public string Api { get; set; }
+
+            public int NumToSend { get; set; }
         }
 
     }
