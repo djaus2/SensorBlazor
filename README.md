@@ -51,3 +51,4 @@ Make sure **appsettings.json** is included in the Build as Content only.
     
 Adding some RPi versions of this with real sensors(Additional .NET Core Console apps):  
   - **SimulatedSensorConsoleAppBME280**: Using **BME280** sensor, get environment data and send to IoTHub via the service.
+  - **SimulatedSensorConsoleCPUCoreTemp**: Gets the CPU Core Temperature (Note only works on Raspian, not IoT-Core). No circuitry required though.

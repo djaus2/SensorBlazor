@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSensorApp.Client", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSensorApp.Shared", "Shared\BlazorSensorApp.Shared.csproj", "{E323BE7D-2675-4C95-90D2-3C3B663AB858}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleApp", "SimulatedSensorConsoleApp\SimulatedSensorConsoleApp.csproj", "{64E5246F-68D0-43D4-A9A1-852F5B5236BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleApp", "SimulatedSensorConsoleApp\SimulatedSensorConsoleApp.csproj", "{BCA4898F-75D0-4C81-8915-3115C4453C34}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleAppBME280", "SimulatedSensorConsoleBME280\SimulatedSensorConsoleAppBME280.csproj", "{D4B38866-5292-4E73-9873-63DF23A41DB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleAppBME280", "SimulatedSensorConsoleBME280\SimulatedSensorConsoleAppBME280.csproj", "{1E2C0272-2022-424A-A6AE-24FDB5B8DB94}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleCPUCoreTemp", "SimulatedSensorConsoleBME280CPUTemp\SimulatedSensorConsoleCPUCoreTemp.csproj", "{7A699F50-D853-4289-85AF-29288C5A42F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleCPUCoreTemp", "SimulatedSensorConsoleCPUCoreTemp\SimulatedSensorConsoleCPUCoreTemp.csproj", "{7BE549A5-6B7E-4B93-829A-56347CB59891}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,18 +33,18 @@ Global
 		{E323BE7D-2675-4C95-90D2-3C3B663AB858}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E323BE7D-2675-4C95-90D2-3C3B663AB858}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E323BE7D-2675-4C95-90D2-3C3B663AB858}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64E5246F-68D0-43D4-A9A1-852F5B5236BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64E5246F-68D0-43D4-A9A1-852F5B5236BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64E5246F-68D0-43D4-A9A1-852F5B5236BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64E5246F-68D0-43D4-A9A1-852F5B5236BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4B38866-5292-4E73-9873-63DF23A41DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4B38866-5292-4E73-9873-63DF23A41DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4B38866-5292-4E73-9873-63DF23A41DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4B38866-5292-4E73-9873-63DF23A41DB9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A699F50-D853-4289-85AF-29288C5A42F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A699F50-D853-4289-85AF-29288C5A42F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A699F50-D853-4289-85AF-29288C5A42F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A699F50-D853-4289-85AF-29288C5A42F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA4898F-75D0-4C81-8915-3115C4453C34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA4898F-75D0-4C81-8915-3115C4453C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA4898F-75D0-4C81-8915-3115C4453C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA4898F-75D0-4C81-8915-3115C4453C34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E2C0272-2022-424A-A6AE-24FDB5B8DB94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E2C0272-2022-424A-A6AE-24FDB5B8DB94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E2C0272-2022-424A-A6AE-24FDB5B8DB94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E2C0272-2022-424A-A6AE-24FDB5B8DB94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BE549A5-6B7E-4B93-829A-56347CB59891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BE549A5-6B7E-4B93-829A-56347CB59891}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BE549A5-6B7E-4B93-829A-56347CB59891}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BE549A5-6B7E-4B93-829A-56347CB59891}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
