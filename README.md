@@ -49,4 +49,4 @@ Make sure **appsettings.json** is included in the Build as Content only.
   ## .NET Core app in Repository
   Sends sample data to this service for onforwarding to IoT Hub. By forwarding to this service, it does not need to know Hub Details. In that way, the Blazor Service acts and an IoT Hub Edge device.  
 Adding some RPi versions of this with real sensors(Additional .NET Core Console apps):
-- SimulatedSensorConsoleAppBME280 (Get environment data) and sends to IoTHub via the service.
+  - SimulatedSensorConsoleAppBME280 (Get environment data) and sends to IoTHub via the service.
