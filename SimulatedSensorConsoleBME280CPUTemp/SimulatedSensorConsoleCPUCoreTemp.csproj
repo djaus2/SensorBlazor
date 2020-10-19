@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+<ItemGroup>
+	<PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.8" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.8" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.8" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.8" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.8" />
+	<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	<PackageReference Include="System.Net.Http" Version="4.3.4" />
+</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Device.Gpio" Version="1.0.0" />
+		<PackageReference Include="Iot.Device.Bindings" Version="1.0.0" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\BlazorSensorApp.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
