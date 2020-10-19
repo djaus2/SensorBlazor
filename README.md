@@ -46,5 +46,8 @@ Make sure **appsettings.json** is included in the Build as Content only.
   - As per Send Data bur comes with one preconfigured Accelerometer datum.
   - Auto-sends when navigated to.
   
-  ## .NET Core app in Repository
-  Sends data to this service for onforwarding to IoT Hub. By forwarding to this service, it doesnot need to know Hub Details. In that way, the Blazor Service acts and an IoT Hub Edge device. 2Do: Add some RPi versions of this with real sensors.
+## .NET Core app in Repository
+  - **SimulatedSensorConsoleApp:**   Sends sample data to this service for onforwarding to IoT Hub. By forwarding to this service, it does not need to know Hub Details. In that way, the Blazor Service acts and an IoT Hub Edge device. 
+    
+Adding some RPi versions of this with real sensors(Additional .NET Core Console apps):  
+  - **SimulatedSensorConsoleAppBME280**: Using **BME280** sensor, get environment data and send to IoTHub via the service.
