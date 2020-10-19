@@ -13,13 +13,15 @@ using Iot.Device.Samples;
 
 namespace ConsoleApp1
 {
+    /// <summary>
+    /// This needs improvement. Lost of read failures.
+    /// </summary>
     class Program
     {
         static async Task Main()
         {
             //Console.WriteLine("Hello Sensor! Press [Enter] when service is running.");
             //Console.ReadLine();
-            
 
             var builder = new ConfigurationBuilder()
                            .SetBasePath(Directory.GetCurrentDirectory())
@@ -36,13 +38,15 @@ namespace ConsoleApp1
             int numToSend = mySettingsConfig.NumToSend;
             Console.WriteLine("Sending {0} messages", numToSend);
 
-            List<double> values = new List<double>(3);
+            List<double> values = null;
+            double value = double.NaN;
 
-            for (int i=0;i<numToSend;i++)
+            Task[] myTasks = new Task[numToSend];
+            for (int i=0;i< numToSend; i++)
             {
-                values = await BME280Sensor.Read();
-                await Send(i, url, SensorType.environment, 0, values);
-                await Task.Delay(1000);
+                values = await DHT22.Read();
+                if (values != null)
+                    await Send(i, url, SensorType.environment, value, values);
             }
 
             Console.WriteLine("Hello Sensor! End");
@@ -65,7 +69,7 @@ namespace ConsoleApp1
                 _Sensor.Value = value;
                 _Sensor.Values = values;
 
-                Console.WriteLine(_Sensor.SensorType);
+                Console.WriteLine($"{ _Sensor.SensorType}: { _Sensor.Values[0]}");
 
                 var dataAsString = JsonConvert.SerializeObject(_Sensor);
                 var content = new StringContent(dataAsString);

@@ -39,15 +39,13 @@ namespace ConsoleApp1
             List<double> values = null;
             double value = double.NaN;
 
-            Task[] myTasks = new Task[numToSend];
-            for (int i=0;i<myTasks.Length;i++)
+            for (int i=0;i<numToSend;i++)
             {
                 value = await CUPCoreTemp.Read();
-                myTasks[i] = Send(i, url, SensorType.temperature, value, values);
+                await Send(i, url, SensorType.temperature, value, values);
                 await Task.Delay(1000);
             }
 
-            Task.WaitAll(myTasks);
             Console.WriteLine("Hello Sensor! End");
 
         }
