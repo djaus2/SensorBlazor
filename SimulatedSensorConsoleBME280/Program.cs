@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using BlazorSensorApp.Shared;
 using Microsoft.Extensions.Configuration;
+using Iot.Device.Samples;
 
 namespace ConsoleApp1
 {
@@ -16,7 +17,7 @@ namespace ConsoleApp1
     {
         static async Task Main()
         {
-            Console.WriteLine("Hello Sensor! Press [Enter] when service is running.");
+            //Console.WriteLine("Hello Sensor! Press [Enter] when service is running.");
             //Console.ReadLine();
             
 
@@ -35,23 +36,14 @@ namespace ConsoleApp1
             int numToSend = mySettingsConfig.NumToSend;
             Console.WriteLine("Sending {0} messages", numToSend);
 
+            List<double> values = new List<double>(3);
 
             Task[] myTasks = new Task[numToSend];
-            for (int i=0;i<myTasks.Length;i+=3)
+            for (int i=0;i<myTasks.Length;i++)
             {
-                myTasks[i]= Send(i,url, SensorType.temperature, 67.8, null);
-                await Task.Delay(333);
-                if ((i + 1) < myTasks.Length)
-                {
-                    myTasks[i + 1] = Send(i + 1, url, SensorType.humidity, 34.78, null);
-                    await Task.Delay(333);
-                    if ((i + 2) < myTasks.Length)
-                    {
-                        myTasks[i + 2] = Send(i + 2, url, SensorType.pressure, 10001.2, null);
-                        await Task.Delay(333);
-                    }
-                }
-
+                values = await BME280Sensor.Read();
+                myTasks[i] = Send(i, url, SensorType.environment, 0, values);
+                await Task.Delay(1000);
             }
 
             Task.WaitAll(myTasks);
