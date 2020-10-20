@@ -54,6 +54,8 @@ namespace Iot.Device.Samples
             LastValues = new List<double>(3);
             using (Dht22 dht = new Dht22(oneWirePin))
             {
+                int count = 0;
+                double hits = 0;
                 Monitor.Enter(LastValues);
                 ValuesQ = new Queue<List<double>>();
                 keepRunning = true;
@@ -64,10 +66,12 @@ namespace Iot.Device.Samples
                     bool result1 = dht.IsLastReadSuccessful;
                     var humValue = dht.Humidity;
                     bool result2 = dht.IsLastReadSuccessful;
-
+                    hits++;
                     if (result1 && result2)
                     {
-                        values = new List<double> { tempValue, humValue, 0 };
+                        count++;
+                        double v3 =((double) count  ) +(hits / 1000.0);  //Combine number of sucessful measurements and number of trials.
+                        values = new List<double> { tempValue, humValue, v3 };
                         ValuesQ.Enqueue(values);
                         Console.WriteLine($"Temperature: {tempValue:0.#}\u00B0C");
                         Console.WriteLine($"Relative humidity: {humValue:0.#}%");
