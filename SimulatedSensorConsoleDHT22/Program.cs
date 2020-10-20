@@ -13,9 +13,6 @@ using Iot.Device.Samples;
 
 namespace ConsoleApp1
 {
-    /// <summary>
-    /// This needs improvement. Lost of read failures.
-    /// </summary>
     class Program
     {
         static async Task Main()
@@ -39,15 +36,27 @@ namespace ConsoleApp1
             Console.WriteLine("Sending {0} messages", numToSend);
 
             List<double> values = null;
-            double value = double.NaN;
+            double value = 0;
 
-            Task[] myTasks = new Task[numToSend];
-            for (int i=0;i< numToSend; i++)
+            Task t = DHT22.Run();
+            for (int i=0;i< numToSend;)
             {
-                values = await DHT22.Read();
+                values = DHT22.Read();
                 if (values != null)
+                {
                     await Send(i, url, SensorType.environment, value, values);
+                    i++;
+                    //Console.WriteLine("Hello Sensor! Got One");
+                }
+                else
+                {
+                    //Console.WriteLine("Hello Sensor! Failed");
+                }
+                await Task.Delay(1000);
             }
+            Console.WriteLine("Hello Sensor! Done");
+            DHT22.Stop();
+            await t;
 
             Console.WriteLine("Hello Sensor! End");
 
