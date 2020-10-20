@@ -38,10 +38,10 @@ namespace ConsoleApp1
             List<double> values = null;
             double value = 0;
 
-            Task t = DHT22.Run(numToSend);
+            Task t = AD115_ADC.Run(numToSend);
             for (int i=0;i< numToSend;)
             {
-                values = DHT22.Read();
+                value = AD115_ADC.Read();
                 if (values != null)
                 {
                     await Send(i, url, SensorType.environment, value, values);
@@ -55,7 +55,7 @@ namespace ConsoleApp1
                 await Task.Delay(1000);
             }
             Console.WriteLine("Hello Sensor! Done");
-            DHT22.Stop();
+            AD115_ADC.Stop();
             await t;
 
             Console.WriteLine("Hello Sensor! End");

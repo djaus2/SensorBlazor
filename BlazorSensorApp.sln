@@ -9,13 +9,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSensorApp.Client", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSensorApp.Shared", "Shared\BlazorSensorApp.Shared.csproj", "{E323BE7D-2675-4C95-90D2-3C3B663AB858}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleApp", "SimulatedSensorConsoleApp\SimulatedSensorConsoleApp.csproj", "{BCA4898F-75D0-4C81-8915-3115C4453C34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensor_ConsoleApp", "SimulatedSensorConsoleApp\SimulatedSensor_ConsoleApp.csproj", "{BCA4898F-75D0-4C81-8915-3115C4453C34}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleAppBME280", "SimulatedSensorConsoleBME280\SimulatedSensorConsoleAppBME280.csproj", "{1E2C0272-2022-424A-A6AE-24FDB5B8DB94}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleCPUCoreTemp", "SimulatedSensorConsoleCPUCoreTemp\SimulatedSensorConsoleCPUCoreTemp.csproj", "{7BE549A5-6B7E-4B93-829A-56347CB59891}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleDHT22", "SimulatedSensorConsoleDHT22\SimulatedSensorConsoleDHT22.csproj", "{9F381036-6371-4BAE-BD94-9DB723EE1F98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleSht3x_NOT_YET_TESTED", "SimulatedSensorConsoleSht3x\SimulatedSensorConsoleSht3x_NOT_YET_TESTED.csproj", "{05911CE2-FD5C-4856-92E2-E7EAE6477707}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulatedSensorConsoleADS1115_ADC_NOT_YET_TESTED", "SimulatedSensorConsoleADS1115_ADC\SimulatedSensorConsoleADS1115_ADC_NOT_YET_TESTED.csproj", "{FFDD218A-FBB2-4409-8E5E-0BB0A7FA67BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{9F381036-6371-4BAE-BD94-9DB723EE1F98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F381036-6371-4BAE-BD94-9DB723EE1F98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F381036-6371-4BAE-BD94-9DB723EE1F98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05911CE2-FD5C-4856-92E2-E7EAE6477707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05911CE2-FD5C-4856-92E2-E7EAE6477707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05911CE2-FD5C-4856-92E2-E7EAE6477707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05911CE2-FD5C-4856-92E2-E7EAE6477707}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFDD218A-FBB2-4409-8E5E-0BB0A7FA67BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFDD218A-FBB2-4409-8E5E-0BB0A7FA67BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFDD218A-FBB2-4409-8E5E-0BB0A7FA67BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFDD218A-FBB2-4409-8E5E-0BB0A7FA67BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

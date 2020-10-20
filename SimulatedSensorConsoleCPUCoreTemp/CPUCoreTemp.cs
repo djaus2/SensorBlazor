@@ -22,7 +22,7 @@ namespace Iot.Device.Samples
     /// Samples at getiotsamples are just the github dotnet/iot samples "rebadeged"
     /// Ref: A blog post about getiotsamples: https://davidjones.sportronics.com.au/blazor/Blazor-A_Wasm_app_for_presenting_Sample_Apps_from_an_API_Repository-coding.html
     /// </summary>
-    public class CUPCoreTemp
+    public class CPUCoreTemp
     {
         public static async Task<double> Read()
         {
@@ -36,6 +36,8 @@ namespace Iot.Device.Samples
                 {
                     Console.WriteLine($"CPU Temperature: {temperature} C");
                 }
+                else temperature = -137;
+
             }
             return temperature;
         }

@@ -8,21 +8,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using Iot.Device.Common;
 using Iot.Device.DHTxx;
+using Iot.Device.Sht3x;
 
 namespace Iot.Device.Samples
 {
     /// <summary>
-    /// Sensor: DHT22
+    /// Sensor: Sht3x
     /// Target is a RPi running Raspian with .NET Core 3.1
-    /// This project is based upon the app: https://getiotsamples.azurewebsites.net/device/Dhtxx-DhtSensor.sample
+    /// This project is based upon the app: https://getiotsamples.azurewebsites.net/device/Sht3x-Sht3x.Samples
     /// This file is based upon: https://getiotsamples.azurewebsites.net/cssource (Changed from an app to a lib class)
-    /// The circuit: Connect OneWitePin to RPi pin 26
+    /// The circuit: https://github.com/dotnet/iot/tree/master/src/devices/Sht3x/samples
     /// The Project file there to use is: https://getiotsamples.azurewebsites.net/projectfileuse
     /// 
     /// Samples at getiotsamples are just the github dotnet/iot samples "rebadeged"
     /// Ref: A blog post about getiotsamples: https://davidjones.sportronics.com.au/blazor/Blazor-A_Wasm_app_for_presenting_Sample_Apps_from_an_API_Repository-coding.html
     /// </summary>
-    public class DHT22
+    public class Sht3x
     {
         static List<double> LastValues = null;
         public static List<double> Read()
@@ -46,41 +47,34 @@ namespace Iot.Device.Samples
         public static Queue<List<double>> ValuesQ = new Queue<List<double>>();
         public static async Task Run(int num)
         {
-            int oneWirePin = 26;
+            const int busId = 1;
+
+            I2cConnectionSettings settings = new I2cConnectionSettings(busId, (byte)Iot.Device.Sht3x.I2cAddress.AddrLow);
+            I2cDevice device = I2cDevice.Create(settings);
 
             List<double> values = null;
 
-            Console.WriteLine("Hello DHT!");
+            Console.WriteLine("Hello Sht3x!");
 
             LastValues = new List<double>(3);
-            using (Dht22 dht = new Dht22(oneWirePin))
+            using (Iot.Device.Sht3x.Sht3x sht3x = new Iot.Device.Sht3x.Sht3x(device))
             {
-                int count = 0;
-                double hits = 0;
                 Monitor.Enter(LastValues);
                 ValuesQ = new Queue<List<double>>();
                 keepRunning = true;
-                while ((keepRunning) && (count< num))
+                int count = 0;
+                while ((keepRunning) && (count < num))
                 {
-                    Monitor.Exit(LastValues);                   
-                    var tempValue = dht.Temperature.Celsius;
-                    bool result1 = dht.IsLastReadSuccessful;
-                    var humValue = dht.Humidity;
-                    bool result2 = dht.IsLastReadSuccessful;
-                    hits++;
-                    if (result1 && result2)
-                    {
-                        count++;
-                        double v3 =((double) count  ) +(hits / 1000.0);  //Combine number of sucessful measurements and number of trials.
-                        values = new List<double> { tempValue, humValue, v3 };
-                        ValuesQ.Enqueue(values);
-                        Console.WriteLine($"Temperature: {tempValue:0.#}\u00B0C");
-                        Console.WriteLine($"Relative humidity: {humValue:0.#}%");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Last read not successful");
-                    }
+                    count++;
+                    Monitor.Exit(LastValues);
+                    var tempValue = sht3x.Temperature.Celsius;
+                    var humValue = sht3x.Humidity;
+
+                    values = new List<double> { tempValue, humValue, 0 };
+                    ValuesQ.Enqueue(values);
+                    Console.WriteLine($"Temperature: {tempValue:0.#}\u00B0C");
+                    Console.WriteLine($"Relative humidity: {humValue:0.#}%");
+
                     await Task.Delay(2500);
                     Monitor.Enter(LastValues);
                 }

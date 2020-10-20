@@ -13,7 +13,8 @@ using Iot.Device.Common;
 namespace Iot.Device.Samples
 {
     /// <summary>
-    /// Requires a BME280 sensor connected to a a RPi running Raspian with .NET Core 3.1
+    /// Sensor BME280
+    /// Target is a RPi running Raspian with .NET Core 3.1
     /// This project is based upon the app: https://getiotsamples.azurewebsites.net/device/Bmxx80-Bme280.sample
     /// This file is based upon: https://getiotsamples.azurewebsites.net/cssource (Changed from an app to a lib class)
     /// This has been simplified so that the published version of IoT.Device.Bidinings V 1.0.0 can be used.

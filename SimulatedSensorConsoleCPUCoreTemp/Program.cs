@@ -41,7 +41,7 @@ namespace ConsoleApp1
 
             for (int i=0;i<numToSend;i++)
             {
-                value = await CUPCoreTemp.Read();
+                value = await CPUCoreTemp.Read();
                 await Send(i, url, SensorType.temperature, value, values);
                 await Task.Delay(1000);
             }
