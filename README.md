@@ -49,7 +49,10 @@ Make sure **appsettings.json** is included in the Build as Content only.
 ## .NET Core app in Repository
   - **SimulatedSensorConsoleApp:**   Sends sample data to this service for onforwarding to IoT Hub. By forwarding to this service, it does not need to know Hub Details. In that way, the Blazor Service acts and an IoT Hub Edge device. 
     
-Adding some RPi versions of this with real sensors(Additional .NET Core Console apps):  
-  - **SimulatedSensorConsoleAppBME280**: Using **BME280** sensor, get environment data and send to IoTHub via the service.
+Adding some RPi versions of this with real sensors(Additional .NET Core Console apps) all send to IoTHub via the service.  
+  - **SimulatedSensorConsoleAppBME280**: Using **BME280** sensor, get environment data.  _Needs a slight rework._
   - **SimulatedSensorConsoleCPUCoreTemp**: Gets the CPU Core Temperature (Note only works on Raspian, not IoT-Core). No circuitry required though.
-  - **SimulatedSensorConsoleDHT22:** Read temperature with DHT22 sensor.
+  - **SimulatedSensorConsoleDHT22:** Read Temperature and Pressure with DHT22 sensor.
+  - **SimulatedSensorConsoleSht3x:** Read Temperature and Pressure with Sht3x sensor. _NOT YET TESTED_
+  - **SimulatedSensorConsoleADS1115_ADC:** Read ADC. _NOT YET TESTED_
+
