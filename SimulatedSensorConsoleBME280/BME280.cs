@@ -26,12 +26,34 @@ namespace Iot.Device.Samples
     /// </summary>
     public class BME280Sensor
     {
-        public static async Task<List<double>> Read()
+        static List<double> LastValues = null;
+        public static List<double> Read()
+        {
+            List<double> values = null;
+            if (ValuesQ.Count != 0)
+            {
+                values = ValuesQ.Dequeue();
+            }
+            return values;
+        }
+
+        public static void Stop()
+        {
+            Monitor.Enter(LastValues);
+            keepRunning = false;
+            Monitor.Exit(LastValues);
+        }
+
+        public static bool keepRunning = false;
+        public static Queue<List<double>> ValuesQ = new Queue<List<double>>();
+
+        public static async Task Start(int numToSend)
         {
             Console.WriteLine("Hello Bme280!");
 
             // bus id on the raspberry pi 3
             const int busId = 1;
+            int count = -0;
 
             var i2cSettings = new I2cConnectionSettings(busId, Bme280.DefaultI2cAddress);
             var i2cDevice = I2cDevice.Create(i2cSettings);
@@ -41,24 +63,34 @@ namespace Iot.Device.Samples
 
             using (i2CBmpe80)
             {
+                Monitor.Enter(LastValues);
+                ValuesQ = new Queue<List<double>>();
+                keepRunning = true;
+                count = 0;
+                while ((keepRunning) && (count < numToSend))
+                {
+                    count++;
+                    
+                    // set mode forced so device sleeps after read
+                    i2CBmpe80.SetPowerMode(Bmx280PowerMode.Forced);
 
-                // set mode forced so device sleeps after read
-                i2CBmpe80.SetPowerMode(Bmx280PowerMode.Forced);
+                    var tempV = await i2CBmpe80.ReadTemperatureAsync();
+                    var tempValue = tempV.Celsius;
+                    var preValue = await i2CBmpe80.ReadPressureAsync();
+                    var humValue = await i2CBmpe80.ReadHumidityAsync(); ;
 
-                var tempV = await i2CBmpe80.ReadTemperatureAsync();
-                var tempValue = tempV.Celsius;
-                var preValue = await i2CBmpe80.ReadPressureAsync();
-                var humValue = await i2CBmpe80.ReadHumidityAsync();;
-
-
-                Console.WriteLine($"Temperature: {tempValue:0.#}\u00B0C");
-                Console.WriteLine($"Pressure: {preValue:0.##}hPa");
-                Console.WriteLine($"Relative humidity: {humValue:0.#}%");
+                    Console.WriteLine($"Temperature: {tempValue:0.#}\u00B0C");
+                    Console.WriteLine($"Pressure: {preValue:0.##}hPa");
+                    Console.WriteLine($"Relative humidity: {humValue:0.#}%");
 
 
-                values = new List<double> { tempValue, humValue, preValue };
+                    values = new List<double> { tempValue, humValue, preValue };
+                    ValuesQ.Enqueue(values);
+                    Monitor.Enter(LastValues);
+                }
+                Monitor.Exit(LastValues);
             }
-            return values;
+            
         }
     }
 }

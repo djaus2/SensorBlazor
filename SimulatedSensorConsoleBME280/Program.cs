@@ -37,14 +37,23 @@ namespace ConsoleApp1
             Console.WriteLine("Sending {0} messages", numToSend);
 
             List<double> values = new List<double>(3);
-
-            for (int i=0;i<numToSend;i++)
+            Task t = BME280Sensor.Start(numToSend);
+            for (int i=0;i<numToSend;)
             {
-                values = await BME280Sensor.Read();
-                await Send(i, url, SensorType.environment, 0, values);
+                values = BME280Sensor.Read();
+                if (values != null)
+                {
+                    await Send(i, url, SensorType.environment, 0, values);
+                    i++;
+                }
+                else
+                {
+                   
+                }
                 await Task.Delay(1000);
             }
-
+            BME280Sensor.Stop();
+            await t;
             Console.WriteLine("Hello Sensor! End");
 
         }

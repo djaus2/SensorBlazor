@@ -44,7 +44,8 @@ namespace ConsoleApp1
                 value = AD115_ADC.Read();
                 if (values != null)
                 {
-                    await Send(i, url, SensorType.environment, value, values);
+                    //Will use with luminosity
+                    await Send(i, url, SensorType.luminosity, value, values);
                     i++;
                     //Console.WriteLine("Hello Sensor! Got One");
                 }

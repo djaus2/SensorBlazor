@@ -51,8 +51,9 @@ namespace ConsoleApp1
                 else
                 {
                     //Console.WriteLine("Hello Sensor! Failed");
+                    await Task.Delay(1000);
                 }
-                await Task.Delay(1000);
+                
             }
             Console.WriteLine("Hello Sensor! Done");
             Sht3x.Stop();
